@@ -47,10 +47,10 @@ const deleteAuditHistory = function() {
 };
 
 module.exports = {
-  genSalt: genSalt,
-  genPassword: genPassword,
-  addManager: addManager,
-  addAuditHistory: addAuditHistory,
-  getAuditHistory: getAuditHistory,
-  deleteAuditHistory: deleteAuditHistory
+  genSalt,
+  genPassword,
+  addManager,
+  addAuditHistory,
+  getAuditHistory,
+  deleteAuditHistory
 };
