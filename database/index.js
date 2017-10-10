@@ -117,13 +117,13 @@ Manager.hasOne(ManagerAudit);
 ManagerAudit.belongsTo(Manager);
 
 //Relationship betwene Manager & Restaurant
-Manager.hasOne(Restaurant);
-Restaurant.belongsTo(Manager);
+Restaurant.hasMany(Manager);
+Manager.belongsTo(Restaurant);
 
 Customer.sync()
+  .then(() => Restaurant.sync())
   .then(() => Manager.sync())
   .then(() => ManagerAudit.sync())
-  .then(() => Restaurant.sync())
   .then(() => Queue.sync())
   .catch(error => console.log('error syncing data', error));
 
