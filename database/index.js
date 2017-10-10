@@ -116,17 +116,23 @@ Queue.belongsTo(Customer);
 Manager.hasOne(ManagerAudit);
 ManagerAudit.belongsTo(Manager);
 
+//Relationship betwene Manager & Restaurant
+Manager.hasOne(Restaurant);
+Restaurant.belongsTo(Manager);
+
 Customer.sync()
+  .then(() => Manager.sync())
+  .then(() => ManagerAudit.sync())
   .then(() => Restaurant.sync())
   .then(() => Queue.sync())
   .catch(error => console.log('error syncing data', error));
 
 module.exports = {
-  Sequelize: Sequelize,
-  db: db,
-  Customer: Customer,
-  Queue: Queue,
-  Restaurant: Restaurant,
-  Manager: Manager,
-  ManagerAudit: ManagerAudit
+  Sequelize,
+  db,
+  Customer,
+  Queue,
+  Restaurant,
+  Manager,
+  ManagerAudit
 };

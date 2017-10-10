@@ -11,7 +11,10 @@ class QueueInfo extends React.Component {
       currentCustomer: {
         restaurant: {
           name:''
-        }
+        },
+        position: '',
+        wait: '',
+        queueInFrontCount: ''
       },
       ready: false
     };
@@ -31,7 +34,7 @@ class QueueInfo extends React.Component {
   getCurrentCustomerId() {
     let windowUrl = window.location.href;
     let id = windowUrl.slice(-1);
-    
+
     $.ajax({
       method: 'GET',
       url: `/queues?queueId=${id}`,
@@ -53,7 +56,7 @@ class QueueInfo extends React.Component {
         <CustomerBanner customer={this.state.currentCustomer}/>
         <h5>YOUR QUEUE NUMBER IS</h5>
         {
-          this.state.ready 
+          this.state.ready
             ? <h3 className="ready-noti">Your table is ready!</h3>
             : <div className="queue-position-display">
               <span className="position-number">{this.state.currentCustomer.position}</span>
