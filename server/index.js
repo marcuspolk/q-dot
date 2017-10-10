@@ -38,7 +38,7 @@ app.use(passport.session());
 //this is to check if manager is logged in, before using static middleware. MUST always be above express.static!
 app.get('/manager', (req, res, next) => {
   if (req.user) {
-    console.log('logged in', req.user);
+    // console.log('logged in', req.user.restaurantId);
     next();
   } else {
     res.redirect('/managerlogin');
@@ -195,7 +195,7 @@ app.put('/queues', (req, res) => {
 //login a manager for a restaurant
 app.post('/managerlogin', passport.authenticate('local'), (req, res) => {
   dbManagerQuery.addAuditHistory('LOGIN', req.user.id)
-    .then(results => res.send('/manager'));
+    .then(results => res.send(`/manager?restaurantId=${req.user.restaurantId}`));
 });
 
 //request for logout of manager page of a restaurant
@@ -211,12 +211,11 @@ app.get('/logout', (req, res) => {
 // '/manager?password=password&username=username&restaurant=restaurant'
 app.post('/manager', (req, res) => {
   if (req.user) {
-    // if (!req.query.password || !req.query.username || !req.query.restaurant)
-    if (!req.query.password || !req.query.username) {
+    if (!req.query.password || !req.query.username || !req.query.restaurant) {
       res.sendStatus(400);
     } else {
       var passwordInfo = dbManagerQuery.genPassword(req.query.password, dbManagerQuery.genSalt());
-      dbManagerQuery.addManager(req.query.username, passwordInfo.passwordHash, passwordInfo.salt)
+      dbManagerQuery.addManager(req.query.username, passwordInfo.passwordHash, passwordInfo.salt, req.query.restaurant)
         .then(results => res.send(results));
     }
   } else {
@@ -230,7 +229,9 @@ app.post('/manager', (req, res) => {
 //returns manager login/logout history
 app.get('/manager/history', (req, res) => {
   if (req.user) {
-    dbManagerQuery.getAuditHistory().then(results => res.send(results));
+    dbManagerQuery.getAuditHistory(req.user.restaurantId, (results) => {
+      res.send(results)
+    });
   } else {
     res.sendStatus(401);
   }
@@ -244,6 +245,7 @@ app.delete('/manager/history', (req, res) => {
     res.sendStatus(401);
   }
 });
+
 
 server.listen(port, () => {
   console.log(`(>^.^)> Server now listening on ${port}!`);

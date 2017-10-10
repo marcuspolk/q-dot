@@ -15,13 +15,19 @@ const genPassword = function(password, salt) {
   };
 };
 
-const addManager = function(username, passwordHash, passwordSalt) {
-  return db.Manager.findOrCreate({
-    where: {
-      username: username,
-      passwordHash: passwordHash,
-      passwordSalt: passwordSalt
-    }
+const addManager = function(username, passwordHash, passwordSalt, restaurant) {
+  db.Restaurant.findOne({
+    where: { name: restaurant },
+    attributes: ['id']
+  }).then((result) => {
+    return db.Manager.findOrCreate({
+      where: {
+        username: username,
+        passwordHash: passwordHash,
+        passwordSalt: passwordSalt,
+        restaurantId: result.id
+      }
+    });
   });
 };
 
@@ -32,14 +38,33 @@ const addAuditHistory = function(type, managerId) {
   });
 };
 
-const getAuditHistory = function() {
-  return db.ManagerAudit.findAll({
+const getAuditHistory = function(restaurantId, cb) {
+  db.Restaurant.findOne({
     include: [{
       model: db.Manager,
-      attributes: ['username'],
+      attributes: ['id'],
       required: false
-    }]
-  });
+    }],
+    where: { id: restaurantId }
+  }).then(restaurant => {
+    return restaurant.managers.map(manager => {
+      return manager.id;
+    });
+  }).then(managerArray => {
+    return db.ManagerAudit.findAll({
+      include: [{
+        model: db.Manager,
+        attributes: ['username'],
+        required: false
+      }],
+      where: { managerId: managerArray }
+    })
+  }).then(results => {
+    cb(results);
+  })
+    .catch(err => {
+      console.log('error getting audit history', err);
+    });
 };
 
 const deleteAuditHistory = function() {

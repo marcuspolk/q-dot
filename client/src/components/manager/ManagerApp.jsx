@@ -14,7 +14,8 @@ class ManagerApp extends React.Component {
 
     this.state = {
       queues: undefined,
-      restaurantInfo: {}
+      restaurantInfo: {},
+      restaurantId: window.location.search ? Number(window.location.search.split('restaurantId=')[1][0]) : ''
     };
 
     // socket initialize
@@ -84,7 +85,7 @@ class ManagerApp extends React.Component {
 
   reloadData() {
     $.ajax({
-      url: '/restaurants?restaurantId=1',
+      url: `/restaurants?restaurantId=${this.state.restaurantId}`,
       success: (data) => {
         console.log(data);
         this.setState(
