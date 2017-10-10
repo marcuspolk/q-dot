@@ -37,9 +37,8 @@ app.use(passport.session());
 
 //this is to check if manager is logged in, before using static middleware. MUST always be above express.static!
 app.get('/manager', (req, res, next) => {
-
   if (req.user) {
-    console.log('logged in');
+    console.log('logged in', req.user);
     next();
   } else {
     res.redirect('/managerlogin');
@@ -209,8 +208,10 @@ app.get('/logout', (req, res) => {
 });
 
 //add a new manager login for a restaurant
+// '/manager?password=password&username=username&restaurant=restaurant'
 app.post('/manager', (req, res) => {
   if (req.user) {
+    // if (!req.query.password || !req.query.username || !req.query.restaurant)
     if (!req.query.password || !req.query.username) {
       res.sendStatus(400);
     } else {
@@ -222,6 +223,9 @@ app.post('/manager', (req, res) => {
     res.sendStatus(401);
   }
 });
+
+//add route to manager/:restaurant
+  // on successful login/signup, redirect to manager/:restaurant
 
 //returns manager login/logout history
 app.get('/manager/history', (req, res) => {
@@ -285,4 +289,3 @@ const socketUpdateManager = (restaurantId) => {
     io.to(managerMap[restaurantId]).emit('update', 'queue changed');
   }
 };
-

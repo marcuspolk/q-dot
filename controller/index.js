@@ -158,13 +158,13 @@ const removeFromQueue = (queueId) => {
 };
 
 module.exports = {
-  findInfoForAllRestaurants: findInfoForAllRestaurants,
-  findInfoForOneRestaurant: findInfoForOneRestaurant,
-  findOrAddCustomer: findOrAddCustomer,
-  addToQueue: addToQueue,
-  updateRestaurantStatus: updateRestaurantStatus,
-  getQueueInfo: getQueueInfo,
-  getCustomerInfo: getCustomerInfo,
-  getManagerInfo: getManagerInfo,
-  removeFromQueue: removeFromQueue
+  findInfoForAllRestaurants,
+  findInfoForOneRestaurant,
+  findOrAddCustomer,
+  addToQueue,
+  updateRestaurantStatus,
+  getQueueInfo,
+  getCustomerInfo,
+  getManagerInfo,
+  removeFromQueue
 };
