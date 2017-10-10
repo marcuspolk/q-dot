@@ -4,12 +4,13 @@ let db;
 if (process.env.DATABASE_URL) {
   db = new Sequelize(process.env.DATABASE_URL);
 } else {
+  const credentials = require('./credentials/credentials.js');
   db = new Sequelize({
     database: 'qdot',
-    username: 'postgres',
-    password: 'qdot',
+    username: credentials.username,
+    password: credentials.password,
     dialect: 'postgres',
-    port: 5000
+    logging: false
   });
 }
 
