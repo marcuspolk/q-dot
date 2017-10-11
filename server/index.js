@@ -49,23 +49,28 @@ app.get('/manager', (req, res, next) => {
   }
 });
 
-app.use(express.static(path.resolve(__dirname, '../client/dist')));
-
-//this shows how you can get queue information from the cookie of a customer who has already queue up
-app.use((req, res, next) => {
+app.get('*/queueInfo', (req, res, next) => {
   if (req.session.queueInfo) {
-    console.log(req.session.queueInfo);
-  }
-  next();
-});
-
-app.get('/', (req, res) => {
-  if (req.session.queueInfo) {
-    res.redirect(`/customer/queueinfo?queueId=${req.session.queueInfo.queueId}`);
+    if (!req.query.queueId) {
+      res.redirect(`/customer/queueInfo?queueId=${req.session.queueInfo.queueId}`);
+    } else {
+      next();
+    }
   } else {
     res.redirect('/customer');
   }
 });
+
+app.use(express.static(path.resolve(__dirname, '../client/dist')));
+
+//this shows how you can get queue information from the cookie of a customer who has already queue up
+// app.use((req, res, next) => {
+//   if (req.session.queueInfo) {
+//     console.log(req.session.queueInfo);
+//   }
+//   next();
+// });
+
 
 //get info for one restaurant or all restaurants
 app.get('/restaurants', (req, res) => {
@@ -297,6 +302,14 @@ app.delete('/manager/history', (req, res) => {
   }
 });
 
+app.get('*', (req, res) => {
+  console.log('doing stuff');
+  if (req.session.queueInfo) {
+    res.redirect(`/customer/queueinfo?queueId=${req.session.queueInfo.queueId}`);
+  } else {
+    res.redirect('/customer');
+  }
+});
 
 server.listen(port, () => {
   console.log(`(>^.^)> Server now listening on port ${port}!`);
