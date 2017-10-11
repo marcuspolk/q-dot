@@ -13,6 +13,8 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const passport = require('./passport.js');
+const sequelizeFixtures = require('sequelize-fixtures');
+const dummyQueues = require('../database/dummyQueues.js');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -97,9 +99,14 @@ app.post('/dummydata', (req, res) => {
     });
 });
 
+// Route handler for adding dummy queue data
+app.post('/dummyqueues', (req, res) => {
+  dummyQueues();
+  res.send(200);
+});
+
 //add a customer to the queue at a restaurant
 app.post('/queues', (req, res) => {
-  console.log('req body', req.body);
   if (!req.body.name || !req.body.mobile || !req.body.restaurantId
       || !req.body.size) {
     res.status(400).send('Bad Request');

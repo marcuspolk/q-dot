@@ -39,12 +39,14 @@ const updateRestaurantStatus = (info) => {
 
 // find/add customer to database
 const findOrAddCustomer = (params) => {
-  return db.Customer.findOne({where: {mobile: params.mobile}})
+  mobile = helpers.phoneNumberFormatter(params.mobile);
+  name = helpers.nameFormatter(params.name);
+  return db.Customer.findOne({where: {mobile: mobile}})
     .then(customer => {
       if (customer === null) {
         const customer = {
-          name: helpers.nameFormatter(params.name),
-          mobile: helpers.phoneNumberFormatter(params.mobile)
+          name: helpers.nameFormatter(name),
+          mobile: helpers.phoneNumberFormatter(mobile)
         };
 
         if (params.email) {
@@ -86,8 +88,8 @@ const addToQueue = (params) => {
       return db.Queue.findOne({where: {customerId: customer.id, restaurantId: params.restaurantId}});
     })
     .then(row => {
-      if (row !== null) {
-        throw new Error('Already added');
+      if (row !== null && row.status === 'Waiting') {
+        throw new Error('Already in queue!');
       } else {
         return findInfoForOneRestaurant(params.restaurantId);
       }
@@ -104,6 +106,10 @@ const addToQueue = (params) => {
       }
     })
     .then(result => {
+      if (params.createdAt) {
+        queueInfo.createdAt = params.createdAt;
+        queueInfo.removedAt = params.removedAt;
+      }
       return db.Queue.create(queueInfo);
     })
     .then(result => {
