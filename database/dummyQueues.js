@@ -31,7 +31,7 @@ const addToQueue = () => {
   for (let i = 0; i < days; i++) {
     let queueDate = addDays(i, startDate);
     for (let j = 0; j < 100; j++) {
-      let randomSize = Math.ceil(Math.random() * 6);
+      let randomSize = Math.ceil(Math.random() * 7);
       queueInfo.size = randomSize;
 
       let randomStatus = Math.floor(Math.random() * 10);
