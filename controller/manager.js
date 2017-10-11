@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const db = require('../database/index.js');
+const Sequelize = require('sequelize');
 
 const genSalt = function() {
   return crypto.randomBytes(16).toString('hex');
@@ -15,20 +16,33 @@ const genPassword = function(password, salt) {
   };
 };
 
-const addManager = function(username, passwordHash, passwordSalt, restaurant) {
+const addManager = function(username, passwordHash, passwordSalt, restaurant, cb) {
   db.Restaurant.findOne({
     where: { name: restaurant },
     attributes: ['id']
-  }).then((result) => {
-    return db.Manager.findOrCreate({
-      where: {
-        username: username,
-        passwordHash: passwordHash,
-        passwordSalt: passwordSalt,
-        restaurantId: result.id
-      }
+  }).then((restaurant) => {
+    if (restaurant) {
+      return restaurant;
+    } else {
+      // return addRestaurantToDBUsingYelpHelperFunction
+    }
+  })
+    .then((restaurant) => {
+      db.Manager.findOrCreate({
+        where: {
+          username: username,
+          passwordHash: passwordHash,
+          passwordSalt: passwordSalt,
+          restaurantId: restaurant.id
+        }
+      })
+    })
+    .then(result => {
+      cb(result);
+    })
+    .catch(err => {
+      console.log('error adding manager', err);
     });
-  });
 };
 
 const addAuditHistory = function(type, managerId) {
@@ -57,6 +71,7 @@ const getAuditHistory = function(restaurantId, cb) {
         attributes: ['username'],
         required: false
       }],
+      order: [['id', 'DESC']],
       where: { managerId: managerArray }
     })
   }).then(results => {

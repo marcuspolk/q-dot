@@ -1,5 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
+import ManagerSignup from './ManagerSignup.jsx';
 
 class ManagerLogin extends React.Component {
   constructor(props) {
@@ -7,30 +8,24 @@ class ManagerLogin extends React.Component {
     this.state = {
       username: '',
       password: '',
-      unauthorised: false
+      unauthorised: false,
+      path: 'login'
     };
   }
 
   updateInputFields(event, field) {
-    if (field === 'username') {
-      this.setState({
-        username: event.target.value
-      });
-    } else {
-      this.setState({
-        password: event.target.value
-      });
-    }
+    this.setState({
+      [field]: event.target.value
+    });
   }
 
   submitHandler(event) {
     event.preventDefault();
-    var self = this;
     $.ajax({
       url: `/managerlogin?username=${this.state.username}&password=${this.state.password}`,
       method: 'POST',
       success: (data) => {
-        self.setState({
+        this.setState({
           unauthorised: false
         });
         window.location.href = data;
@@ -39,8 +34,8 @@ class ManagerLogin extends React.Component {
         console.log('failed to load page', err);
       },
       statusCode: {
-        401: function() {
-          self.setState({
+        401: () => {
+          this.setState({
             unauthorised: true
           });
         }
@@ -48,42 +43,54 @@ class ManagerLogin extends React.Component {
     });
   }
 
-  render() {
-    return (
-      <div className='container'>
-        <form className='form-signin' onSubmit={this.submitHandler.bind(this)}>
-          <h2 className='form-signin-heading'>Please sign in</h2>
-          <label className='sr-only'>Email address</label>
-          <input
-            value={this.state.username}
-            type='username'
-            className='form-control'
-            placeholder='username'
-            required autoFocus
-            onChange={(e) => this.updateInputFields(e, 'username')}
-          />
-          <label className='sr-only'>Password</label>
-          <input
-            value={this.state.password}
-            type='password'
-            className='form-control'
-            placeholder='Password'
-            required
-            onChange={(e) => this.updateInputFields(e, 'password')}
-          />
-          <button className='btn btn-lg btn-primary btn-block' type='submit'>Sign in</button>
-          <br />
-          {
-            this.state.unauthorised ?
-              <div className="alert alert-danger">
-              invalid credentials - please try again!
-              </div>
-              : null
-          }
-        </form>
+  togglePath(event, newPath) {
+    this.setState({
+      path: newPath
+    });
+  }
 
-      </div>
-    );
+  render() {
+    if (this.state.path === 'signup') {
+      return (<ManagerSignup togglePath={this.togglePath.bind(this)}/>);
+    } else {
+      return (
+        <div className='container'>
+          <form className='form-signin' onSubmit={this.submitHandler.bind(this)}>
+            <h2 className='form-signin-heading'>Log in</h2>
+            <label className='sr-only'>Email address</label>
+            <input
+              value={this.state.username}
+              type='username'
+              className='form-control'
+              placeholder='username'
+              required autoFocus
+              onChange={(e) => this.updateInputFields(e, 'username')}
+            />
+            <label className='sr-only'>Password</label>
+            <input
+              value={this.state.password}
+              type='password'
+              className='form-control'
+              placeholder='Password'
+              required
+              onChange={(e) => this.updateInputFields(e, 'password')}
+            />
+            <button className='btn btn-lg btn-primary btn-block' type='submit'>Log in</button>
+            <br />
+            {
+              this.state.unauthorised ?
+                <div className="alert alert-danger">
+                invalid credentials - please try again!
+                </div>
+                : null
+            }
+          </form>
+          <div className="redir">New user?</div>
+          <button onClick={(e) => (this.togglePath.call(this, e, 'signup'))} className='btn btn-lg btn-primary btn-block'>Sign up</button>
+        </div>
+      );
+    }
+
   }
 }
 
