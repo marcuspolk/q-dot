@@ -14,6 +14,7 @@ const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const passport = require('./passport.js');
 const dummyQueues = require('../database/dummyQueues.js');
+const yelp = require('./yelp.js');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -280,6 +281,19 @@ app.post('/manager', (req, res) => {
   // } else {
   //   res.sendStatus(401);
   // }
+});
+
+//add route to manager/:restaurant
+  // on successful login/signup, redirect to manager/:restaurant
+
+//returns up to 10 suggested restaurant objects based on term and location
+app.get('/yelp', (req, res) => {
+  var params = {
+    term: req.query.term,
+    location: req.query.location,
+    limit: 10
+  };
+  yelp.get(req, res, params);
 });
 
 //returns manager login/logout history

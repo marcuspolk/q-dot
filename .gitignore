@@ -24,6 +24,7 @@ coverage
 
 # Credentials
 database/credentials/credentials.js
+server/credentials/credentials.js
 
 # Dependency directorys
 # Deployed apps should consider commenting these lines out:
