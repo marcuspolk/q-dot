@@ -13,7 +13,6 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const passport = require('./passport.js');
-const sequelizeFixtures = require('sequelize-fixtures');
 const dummyQueues = require('../database/dummyQueues.js');
 
 app.use(bodyParser.json());
