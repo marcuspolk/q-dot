@@ -91,15 +91,32 @@ app.get('/restaurants', (req, res) => {
   /*
     check auth for post requests. should be a manager of the restaurant.
     only send inactive messages if manager auth present.
+    for now put code in here. after finishing, move it to controller/index.js
   */
 
 app.get('/restaurant/:id/announcements', (req, res) => {
   var id = req.params.id;
-  res.send(`test ${id}`);
+  db.Announcement.findAll({where: {restaurantId: id}}).then(announcements => {
+    res.json(announcements);
+  })
+  .catch(err => {
+    console.log('error getting announcements');
+    res.send(`error getting announcements ${err}`)
+  });
 });
 
 app.post('/restaurant/:id/announcements', (req, res) => {
+  var id = req.params.id;
 
+  if (req.user && req.user.restaurantId === id) { 
+    var message = req.body.message;
+    var status = req.body.status;
+    db.Announcement.findOrCreate({where: {restaurantId: id, message: message, status: status}})
+    .then(() => res.status(201).send('OK'))
+    .catch((err) => res.status(400).send(`ERROR: ${err}`));
+   } else {
+  res.status(401).send('Error authenticating ')
+    }
 });
 
 
