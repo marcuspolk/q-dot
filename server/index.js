@@ -13,6 +13,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const passport = require('./passport.js');
+const dummyQueues = require('../database/dummyQueues.js');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -94,6 +95,16 @@ app.post('/dummydata', (req, res) => {
     .catch(error => {
       console.log('error posting dummydata', error);
       res.send('could not add dummydata');
+    });
+});
+
+// Route handler for adding dummy queue data
+app.post('/dummyqueues', (req, res) => {
+  dummyQueues()
+    .then(() => res.sendStatus(200))
+    .catch(error => {
+      console.error(error);
+      res.send('could not add dummyqueues');
     });
 });
 
