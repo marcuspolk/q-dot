@@ -1,7 +1,8 @@
 const db = require('./index.js');
-const dbQuery = require('../controller/index.js');
 
-let dummyQueues = [];
+const obj = {
+  dummyQueues: []
+};
 
 const randomDate = (start, end) => {
   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
@@ -15,9 +16,9 @@ const addDays = (days, oldDate) => {
   return newDate;
 };
 
-const addToQueue = (callback) => {
+const addToQueue = () => {
   let today = new Date();
-  let startDate = new Date(2012, 0, 1);
+  let startDate = new Date(2017, 0, 1);
   let days = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
 
   let queueInfo = {
@@ -47,12 +48,11 @@ const addToQueue = (callback) => {
 
       queueInfo.createdAt = new Date(createdDate);
       queueInfo.removedAt = new Date(createdDate.getTime() + (Math.random() * 1000 * 60 * 60));
-      console.log(queueInfo);
-      db.Queue.create(queueInfo)
-        .catch(err => console.error(err));
+
+      obj.dummyQueues.push(queueInfo);
+      db.Queue.create(queueInfo);
     }
   }
-  callback();
 };
 
 module.exports = addToQueue;
