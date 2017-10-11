@@ -44,10 +44,10 @@ const addAnnouncements = () => {
 };
 
 
-// add addannouncements here..drop it first though
 const dropDB = () => {
   return db.Queue.drop()
     .then(() => db.Customer.drop())
+    .then(() => db.Announcement.drop())
     .then(() => db.ManagerAudit.drop())
     .then(() => db.Manager.drop())
     .then(() => db.Restaurant.drop())
@@ -59,7 +59,6 @@ const dropDB = () => {
     .then(() => db.Customer.sync({force: true}))
     .then(() => db.Queue.sync({force: true}))
     .then(() => addToQueue())
-    .then(() => db.Announcement.drop())
     .then(() => db.Announcement.sync({force: true}))
     .then(() => addAnnouncements())
     .catch(err => {
