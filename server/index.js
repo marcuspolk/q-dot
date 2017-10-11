@@ -201,6 +201,17 @@ app.put('/queues', (req, res) => {
   }
 });
 
+app.patch('/queues', (req, res) => {
+  dbQuery.updateQueue(req.query.queueId, req.query.position)
+    .then(results => {
+      res.sendStatus(201);
+    })
+    .catch(err => {
+      console.log('Error updating queue', err);
+      res.status(418).send('Request Failed');
+    });
+})
+
 //login a manager for a restaurant
 app.post('/managerlogin', passport.authenticate('local'), (req, res) => {
   dbManagerQuery.addAuditHistory('LOGIN', req.user.id)
@@ -216,8 +227,6 @@ app.get('/logout', (req, res) => {
     });
 });
 
-//add a new manager login for a restaurant
-// '/manager?password=password&username=username&restaurant=restaurant'
 app.post('/manager', (req, res) => {
   console.log('request', req.query);
   // if (req.user) {
@@ -233,9 +242,6 @@ app.post('/manager', (req, res) => {
   //   res.sendStatus(401);
   // }
 });
-
-//add route to manager/:restaurant
-  // on successful login/signup, redirect to manager/:restaurant
 
 //returns manager login/logout history
 app.get('/manager/history', (req, res) => {
@@ -261,11 +267,6 @@ app.delete('/manager/history', (req, res) => {
 server.listen(port, () => {
   console.log(`(>^.^)> Server now listening on ${port}!`);
 });
-
-// socket io cant use express listen
-// app.listen(port, () => {
-//   console.log(`(>^.^)> Server now listening on ${port}!`);
-// });
 
 let queueMap = {};// queueId: socketId
 let managerMap = {};// restaurantId: socketId

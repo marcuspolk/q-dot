@@ -103,6 +103,21 @@ class ManagerApp extends React.Component {
     });
   }
 
+  updateQueue(queryArray) {
+    queryArray.forEach((query) => {
+      $.ajax({
+        url: '/queues?' + query,
+        type: 'PATCH',
+        success: (res) => {
+          console.log(res);
+        },
+        error: (err) => {
+          console.log('Error updating queue', err);
+        }
+      });
+    });
+  }
+
   render() {
     return (
       <div>
@@ -120,7 +135,7 @@ class ManagerApp extends React.Component {
               <ManagerAudit />
             </div>
             <div className="col-md-6">
-              <CustomerList queues={this.state.queues} addCustomer={this.addToQueue.bind(this)} removeCustomer={this.removeCustomer.bind(this)} notiCustomer={this.notiCustomer.bind(this)}/>
+              <CustomerList updateQueue={this.updateQueue.bind(this)} queues={this.state.queues} addCustomer={this.addToQueue.bind(this)} removeCustomer={this.removeCustomer.bind(this)} notiCustomer={this.notiCustomer.bind(this)}/>
             </div>
           </div>
         </div>
