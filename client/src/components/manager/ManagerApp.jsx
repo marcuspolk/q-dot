@@ -68,17 +68,16 @@ class ManagerApp extends React.Component {
     });
   }
 
-  removeCustomer(queueId) {
-    console.log(queueId);
+  removeCustomer(queueId, status) {
     $.ajax({
       url: '/queues?queueId=' + queueId,
       method: 'PUT',
+      data: {status: status},
       success: (data) => {
-        console.log(data);
         this.reloadData();
       },
       error: (err) => {
-        console.log(err);
+        console.error(err);
       }
     });
   }

@@ -179,7 +179,7 @@ app.put('/queues', (req, res) => {
   if (!req.query.queueId) {
     res.status(400).send('Bad Request');
   } else {
-    dbQuery.removeFromQueue(req.query.queueId)
+    dbQuery.removeFromQueue(req.query.queueId, req.body.status)
       .then(result => res.send(result))
       .catch(err => {
         if (err.message.includes('removed')) {

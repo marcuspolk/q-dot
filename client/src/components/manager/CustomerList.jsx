@@ -26,8 +26,8 @@ class CustomerList extends React.Component {
     let entries = this.props.queues ? _.map(this.props.queues, (queue, index) => {
       return <CustomerListEntry key={index} queue={queue} notiCustomer={notiCustomer} showModal={this.showModal.bind(this)}/>;
     }) : <div>Nobody In Queue</div>;
-    
-    let removeCustomer = () => this.props.removeCustomer(this.state.modalQueue.id);
+
+    let removeCustomer = (status) => this.props.removeCustomer(this.state.modalQueue.id, status);
     return (
       <div>
         <div className="row">
@@ -37,7 +37,7 @@ class CustomerList extends React.Component {
         <div className="panel panel-default">
           {entries}
         </div>
-        
+
         { this.state.modalQueue
           ? <div id="remove-warning" className="modal fade" role="dialog">
             <div className="modal-dialog">
@@ -50,8 +50,8 @@ class CustomerList extends React.Component {
                   <p className="warning-content"><b>Remove {this.state.modalQueue.customer.name}</b> From Queue?</p>
                 </div>
                 <div className="modal-footer">
-                  <button className="btn btn-warning" data-dismiss="modal" onClick={removeCustomer}>No Show</button>
-                  <button className="btn btn-success" data-dismiss="modal" onClick={removeCustomer}>Seated</button>
+                  <button className="btn btn-warning" data-dismiss="modal" onClick={() => removeCustomer('No Show')}>No Show</button>
+                  <button className="btn btn-success" data-dismiss="modal" onClick={() => removeCustomer('Seated')}>Seated</button>
                   <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
               </div>
