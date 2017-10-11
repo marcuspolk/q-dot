@@ -76,7 +76,8 @@ const Queue = db.define('queue', {
   status: {
     type: Sequelize.STRING,
     defaultValue: 'Waiting'
-  }
+  },
+  removedAt: Sequelize.DATE
 });
 
 //Restaurant Schema
