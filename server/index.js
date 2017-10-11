@@ -38,8 +38,11 @@ app.use(passport.session());
 //this is to check if manager is logged in, before using static middleware. MUST always be above express.static!
 app.get('/manager', (req, res, next) => {
   if (req.user) {
-    // console.log('logged in', req.user.restaurantId);
-    next();
+    if (!req.query.restaurantId) {
+      res.redirect(`/manager?restaurantId=${req.user.restaurantId}`);
+    } else {
+      next();
+    }
   } else {
     res.redirect('/managerlogin');
   }
@@ -210,17 +213,19 @@ app.get('/logout', (req, res) => {
 //add a new manager login for a restaurant
 // '/manager?password=password&username=username&restaurant=restaurant'
 app.post('/manager', (req, res) => {
-  if (req.user) {
+  console.log('request', req.query);
+  // if (req.user) {
     if (!req.query.password || !req.query.username || !req.query.restaurant) {
       res.sendStatus(400);
     } else {
       var passwordInfo = dbManagerQuery.genPassword(req.query.password, dbManagerQuery.genSalt());
-      dbManagerQuery.addManager(req.query.username, passwordInfo.passwordHash, passwordInfo.salt, req.query.restaurant)
-        .then(results => res.send(results));
+      dbManagerQuery.addManager(req.query.username, passwordInfo.passwordHash, passwordInfo.salt, req.query.restaurant, (results) => {
+        res.send(results)
+      });
     }
-  } else {
-    res.sendStatus(401);
-  }
+  // } else {
+  //   res.sendStatus(401);
+  // }
 });
 
 //add route to manager/:restaurant
