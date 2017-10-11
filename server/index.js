@@ -287,11 +287,12 @@ app.post('/manager', (req, res) => {
   // on successful login/signup, redirect to manager/:restaurant
 
 app.get('/yelp', (req, res) => {
-  var paramObj = {
-    location: req.query.location,
-    term: req.query.term
-  }
-  yelp.get(req, res, paramObj);
+  var params = {
+    term: 'tempest',
+    location: 'san francisco',
+    limit: 10
+  };
+  yelp.get(req, res, params);
 });
 
 //returns manager login/logout history
