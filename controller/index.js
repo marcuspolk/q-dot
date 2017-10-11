@@ -104,6 +104,10 @@ const addToQueue = (params) => {
       }
     })
     .then(result => {
+      if (params.createdAt) {
+        queueInfo.createdAt = params.createdAt;
+        queueInfo.removedAt = params.removedAt;
+      }
       return db.Queue.create(queueInfo);
     })
     .then(result => {
