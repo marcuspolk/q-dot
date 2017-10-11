@@ -3,8 +3,7 @@
 // 'credentials.js' will automatically be ignored by git
 
 const yelpCredentials = {
-	clientID: '',
-	clientSecret: ''
+	access_token: ''
 };
 
 module.exports = yelpCredentials;
