@@ -74,7 +74,7 @@ This section outlines the steps on how to deploy the webserver and postgreSQL se
 2. Create a postgres database for your app. Follow instructions on [Heroku Postgres](https://devcenter.heroku.com/articles/heroku-postgresql).
 
 3. To post dummy data in the database, use postman or curl to make a POST request to http://<server_url>/dummydata
-  
+
   Note: Post request for dummy data will delete all tables in the database and re-create them.
 
 #### DigitalOcean Deployment
@@ -105,7 +105,7 @@ Refer to the [official repository for redis](https://hub.docker.com/_/redis/) fo
 sudo docker run --name q-sessions -p 6379:6379 -d redis redis-server --appendonly yes
 ```
 
-This creates a new instance/container of the redis server, WITH persistant storage so that when you restart the docker container, the session information will not be wiped. 
+This creates a new instance/container of the redis server, WITH persistant storage so that when you restart the docker container, the session information will not be wiped.
 
 This also exposes port 6379 on the docker container to port 6379 of your linode/digitalocean server, so that it is possible to access the redis server via `http://<linode_ip_address>:6379/`
 
@@ -158,13 +158,13 @@ npm start
 
 **Setup Postgres Database**
 
-1. [Install](https://www.postgresql.org/download) postgres on your local computer. 
+1. [Install](https://www.postgresql.org/download) postgres on your local computer.
 
 Note: At this point you will not have a database called 'q-dot'. You will have to create it manually on your local computer.
 
 2. Go to Postgres in your applications folder and run SQL Shell. The default database is called 'postgres'. Login in to the database.
 
-3. Run command 
+3. Run command
 
 ```
 create database qdot;
@@ -267,6 +267,8 @@ To add dummy data to the database, use postman or curl to make a POST request to
 
 ## Requirements
 
+- mutt (brew install mutt)
+- redis (brew install redis & redis-server /usr/local/etc/redis.conf)
 - babel-cli 6.7.5
 - babel-core 6.26.0
 - babel-loader 7.1.2
@@ -297,6 +299,17 @@ To add dummy data to the database, use postman or curl to make a POST request to
 - react-router-dom 4.2.2
 
 ## Development
+
+## Running Textbelt SMS Server
+```sh
+brew install redis
+redis-server /usr/local/etc/redis.conf
+brew install mutt
+cd textbelt
+npm install
+npm start
+```
+NOTE: The textbelt server does not use nodemon as of now due to port conflicts. ^C and run npm start every time you make a change to textbelt/server/app.js
 
 ### Installing Dependencies
 
