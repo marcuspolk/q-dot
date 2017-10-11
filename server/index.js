@@ -286,6 +286,7 @@ app.post('/manager', (req, res) => {
 //add route to manager/:restaurant
   // on successful login/signup, redirect to manager/:restaurant
 
+//returns up to 10 suggested restaurants based on location and term
 app.get('/yelp', (req, res) => {
   var params = {
     term: 'tempest',
