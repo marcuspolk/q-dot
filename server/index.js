@@ -86,6 +86,23 @@ app.get('/restaurants', (req, res) => {
   }
 });
 
+
+// handle announcements for restaurants.
+  /*
+    check auth for post requests. should be a manager of the restaurant.
+    only send inactive messages if manager auth present.
+  */
+
+app.get('/restaurant/:id/announcements', (req, res) => {
+  var id = req.params.id;
+  res.send(`test ${id}`);
+});
+
+app.post('/restaurant/:id/announcements', (req, res) => {
+
+});
+
+
 //drop database and add dummy data
 app.post('/dummydata', (req, res) => {
   dummyData.dropDB()
@@ -265,7 +282,7 @@ app.delete('/manager/history', (req, res) => {
 
 
 server.listen(port, () => {
-  console.log(`(>^.^)> Server now listening on ${port}!`);
+  console.log(`(>^.^)> Server now listening on port ${port}!`);
 });
 
 let queueMap = {};// queueId: socketId
