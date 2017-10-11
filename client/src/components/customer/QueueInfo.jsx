@@ -33,21 +33,35 @@ class QueueInfo extends React.Component {
 
   getCurrentCustomerId() {
     let windowUrl = window.location.href;
-    let id = windowUrl.slice(-1);
-
-    $.ajax({
-      method: 'GET',
-      url: `/queues?queueId=${id}`,
-      success: (data) => {
-        console.log('successfully grabbed queue data for customer', data);
-        this.setState({ currentCustomer: data });
-        // report queueId to server socket
-        this.socket.emit('customer report', id);
-      },
-      failure: (error) => {
-        console.log('failed to grab queue data for customer', error);
-      }
-    });
+    console.log()
+    let id = Number(new URLSearchParams(window.location.search).get('queueId'));
+    if (!id) {
+      $.ajax({
+        method: 'GET',
+        url: `/customer/queueInfo`,
+        success: (data) => {
+          console.log('successfully received redirect response', data);
+          window.location.replace(`/customer/queueinfo?queueId=${data.queueId}`);
+        },
+        failure: (error) => {
+          console.log('failed to grab queue data for customer', error);
+        }
+      });
+    } else {
+      $.ajax({
+        method: 'GET',
+        url: `/queues?queueId=${id}`,
+        success: (data) => {
+          console.log('successfully grabbed queue data for customer', data);
+          this.setState({ currentCustomer: data });
+          // report queueId to server socket
+          this.socket.emit('customer report', id);
+        },
+        failure: (error) => {
+          console.log('failed to grab queue data for customer', error);
+        }
+      });
+    }
   }
 
   render() {
