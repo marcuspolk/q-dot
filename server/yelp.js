@@ -1,6 +1,7 @@
 const db = require('../database/index.js');
 const yelpAPIKey = require('./credentials/credentials.js');
 const request = require('request');
+const express = require('express');
 
 const yelp = {
 	get: (req, res, params) => {
@@ -15,11 +16,9 @@ const yelp = {
 			if (error) {
 				console.error(error);
 			}
-			console.log(response.statusCode);
-			//console.log('cb response: ', response);
-			//console.log('cb body: ', body);
-			res.send(body);
+			res.send(JSON.parse(body));
 		};
+		
 	 	request(options, cb);
 	 }
 }
