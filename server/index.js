@@ -100,17 +100,13 @@ app.post('/dummydata', (req, res) => {
 
 // Route handler for adding dummy queue data
 app.post('/dummyqueues', (req, res) => {
-  dummyQueues()
-    .then(() => res.sendStatus(200))
-    .catch(error => {
-      console.error(error);
-      res.send('could not add dummyqueues');
-    });
+  dummyQueues(() => {
+    res.sendStatus(200);
+  });
 });
 
 //add a customer to the queue at a restaurant
 app.post('/queues', (req, res) => {
-  console.log('req body', req.body);
   if (!req.body.name || !req.body.mobile || !req.body.restaurantId
       || !req.body.size) {
     res.status(400).send('Bad Request');
