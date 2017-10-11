@@ -15,7 +15,7 @@ class ManagerApp extends React.Component {
     this.state = {
       queues: undefined,
       restaurantInfo: {},
-      restaurantId: window.location.search ? Number(window.location.search.split('restaurantId=')[1][0]) : ''
+      restaurantId: window.location.search ? Number(new URLSearchParams(window.location.search).get('restaurantId')) : ''
     };
 
     // socket initialize
