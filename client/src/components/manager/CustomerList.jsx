@@ -2,6 +2,7 @@ import React from 'react';
 import CustomerListEntry from './CustomerListEntry.jsx';
 import _ from 'lodash';
 import $ from 'jquery';
+require('webpack-jquery-ui/sortable');
 import AddToQueue from './AddToQueue.jsx';
 
 class CustomerList extends React.Component {
@@ -10,7 +11,8 @@ class CustomerList extends React.Component {
     super(props);
 
     this.state = {
-      modalQueue: undefined
+      modalQueue: undefined,
+      newQueue: []
     };
   }
 
@@ -21,10 +23,36 @@ class CustomerList extends React.Component {
     setTimeout(() => $('#remove-warning').modal('toggle'), 0);
   }
 
+  componentDidMount() {
+    $('#sortable').sortable({
+      revert: true,
+      stop: () => {
+        let children = $('#sortable')[0].children;
+        let newQueue = $.map(children, (child, index) => {
+          return `${child.id}&position=${(index + 1)}`;
+        });
+        this.setState({
+          newQueue: newQueue
+        });
+      }
+    });
+    $('#sortable, #sortable .ui-state-default').disableSelection();
+  }
+
+  componentDidUpdate() {
+    if (this.state.newQueue) {
+      this.props.updateQueue(this.state.newQueue);
+    }
+  }
+
   render() {
     let notiCustomer = this.props.notiCustomer.bind(this);
     let entries = this.props.queues ? _.map(this.props.queues, (queue, index) => {
-      return <CustomerListEntry key={index} queue={queue} notiCustomer={notiCustomer} showModal={this.showModal.bind(this)}/>;
+      return (
+        <div className="ui-state-default" key={index} id={`queueId=${queue.id}`} style={{background: 'white'}}>
+          <CustomerListEntry queue={queue} notiCustomer={notiCustomer} showModal={this.showModal.bind(this)}/>
+        </div>
+      );
     }) : <div>Nobody In Queue</div>;
 
     let removeCustomer = (status) => this.props.removeCustomer(this.state.modalQueue.id, status);
@@ -34,7 +62,7 @@ class CustomerList extends React.Component {
           <h3 className="customer-list-head col-md-8">Customers in Queue</h3>
           <AddToQueue className="col-md-4" addCustomer={this.props.addCustomer.bind(this)}/>
         </div>
-        <div className="panel panel-default">
+        <div className="panel panel-default" id="sortable">
           {entries}
         </div>
 

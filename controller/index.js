@@ -74,6 +74,10 @@ const getQueueInfo = (restaurantId, customerId, customerPosition) => {
   });
 };
 
+const updateQueue = (queueId, newPos) => {
+  return db.Queue.update({position: newPos}, {where: {id: queueId}});
+}
+
 //add a customer to a queue at a restaurant
 const addToQueue = (params) => {
   const queueInfo = {
@@ -172,5 +176,6 @@ module.exports = {
   getQueueInfo,
   getCustomerInfo,
   getManagerInfo,
-  removeFromQueue
+  removeFromQueue,
+  updateQueue
 };
