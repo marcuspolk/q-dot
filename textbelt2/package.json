@@ -1,0 +1,27 @@
+{
+  "name": "TextBelt",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:typpo/textbelt.git"
+  },
+  "scripts": {
+    "start": "node server/app.js"
+  },
+  "dependencies": {
+    "authbox": "^0.9.3",
+    "body-parser": "^1.18.2",
+    "express": "~3.5.1",
+    "jade": "~0.14.2",
+    "mixpanel": "~0.0.19",
+    "nodemailer": "~0.6.1",
+    "nodemon": "^1.12.1",
+    "redis-url": "~0.2.0",
+    "underscore": "~1.6.0"
+  },
+  "devDependencies": {},
+  "main": "app",
+  "engines": {
+    "node": ">= 0.4.0"
+  },
+  "version": "0.0.2"
+}
