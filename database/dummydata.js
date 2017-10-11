@@ -37,6 +37,14 @@ const addManager = () => {
   });
 };
 
+const addAnnouncements = () => {
+  return db.Announcement.findOrCreate({where: {message: '50% off everything.', status: 'active', restaurantId: 1}})
+      .then(() => db.Announcement.findOrCreate({where: {message: 'Check out our new subprime ribs. It\'s like 2008 all over again', status: 'active', restaurantId: 2}}))
+      .catch(err => console.log('error adding dummy announcements', err));
+};
+
+
+// add addannouncements here..drop it first though
 const dropDB = () => {
   return db.Queue.drop()
     .then(() => db.Customer.drop())
@@ -51,6 +59,9 @@ const dropDB = () => {
     .then(() => db.Customer.sync({force: true}))
     .then(() => db.Queue.sync({force: true}))
     .then(() => addToQueue())
+    .then(() => db.Announcement.drop())
+    .then(() => db.Announcement.sync({force: true}))
+    .then(() => addAnnouncements())
     .catch(err => {
       console.log('error syncing dummy data', err);
     });
