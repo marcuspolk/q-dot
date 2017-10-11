@@ -13,7 +13,8 @@ const findInfoForOneRestaurant = (restaurantId) => {
       where: {
         position: {
           [ne]: null
-        }
+        },
+        status: 'Waiting'
       },
       include: [db.Customer],
       required: false
