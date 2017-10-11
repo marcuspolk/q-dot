@@ -140,7 +140,7 @@ const getManagerInfo = (username) => {
 };
 
 //remove customer from queue
-const removeFromQueue = (queueId) => {
+const removeFromQueue = (queueId, status) => {
   let restaurant;
   return db.Queue.find({where: {id: queueId}, include: [db.Restaurant]})
     .then(row => {
@@ -153,7 +153,7 @@ const removeFromQueue = (queueId) => {
     })
     .then(result => result.map(row => db.Queue.upsert({wait: row.wait - restaurant.average_wait, id: row.id})))
     .then(() => db.Restaurant.upsert({'total_wait': restaurant.total_wait - restaurant.average_wait, phone: restaurant.phone}))
-    .then(() => db.Queue.upsert({position: null, wait: null, id: queueId}))
+    .then(() => db.Queue.upsert({position: null, wait: null, status: status, id: queueId}))
     .then(() => getQueueInfo(restaurant.id, 0, restaurant.nextPosition + 1));
 };
 
