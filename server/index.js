@@ -15,6 +15,7 @@ const RedisStore = require('connect-redis')(session);
 const passport = require('./passport.js');
 const dummyQueues = require('../database/dummyQueues.js');
 const yelp = require('./yelp.js');
+const sendSMS = require('../helpers/sms.js');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -114,7 +115,7 @@ app.get('/restaurant/:id/announcements', (req, res) => {
 app.post('/restaurant/:id/announcements', (req, res) => {
   var id = req.params.id;
 
-  if (req.user && req.user.restaurantId === id) { 
+  if (req.user && req.user.restaurantId === id) {
     var message = req.body.message;
     var status = req.body.status;
     db.Announcement.findOrCreate({where: {restaurantId: id, message: message, status: status}})
@@ -228,16 +229,33 @@ app.put('/queues', (req, res) => {
   if (!req.query.queueId) {
     res.status(400).send('Bad Request');
   } else {
-    dbQuery.removeFromQueue(req.query.queueId, req.body.status)
-      .then(result => res.send(result))
-      .catch(err => {
-        if (err.message.includes('removed')) {
-          res.send(err.message);
-        } else {
-          console.log('error when removing from queue', err);
-          res.status(418).send('Request Failed');
-        }
-      });
+    if (req.body.status === 'Seated') {
+      db.Queue.find({where: {id: req.query.queueId}, include: [db.Restaurant, db.Customer]})
+        .then(row => {
+          return sendSMS(row.customer.mobile, row.restaurant.name);
+        })
+        .then(() => {
+          return dbQuery.removeFromQueue(req.query.queueId, req.body.status)
+        })
+        .then(result => {
+          res.send(result);
+        })
+        .catch(err => {
+          console.log('Error removing seated customer from queue', err);
+          res.sendStatus(418);
+        });
+    } else {
+      dbQuery.removeFromQueue(req.query.queueId, req.body.status)
+        .then(result => res.send(result))
+        .catch(err => {
+          if (err.message.includes('removed')) {
+            res.send(err.message);
+          } else {
+            console.log('error when removing from queue', err);
+            res.status(418).send('Request Failed');
+          }
+        });
+    }
   }
 });
 
