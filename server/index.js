@@ -94,6 +94,7 @@ app.get('/restaurants', (req, res) => {
   }
 });
 
+
 app.get('*/menu/:restaurantId', (req, res) => {
   dbMenuQuery.getMenuForRestaurant(req.params.restaurantId)
     .then(results => {
@@ -173,16 +174,16 @@ app.get('/restaurant/:id/announcements', (req, res) => {
 });
 
 app.post('/restaurant/:id/announcements', (req, res) => {
-  var id = req.params.id;
+  var id = Number(req.params.id);
 
   if (req.user && req.user.restaurantId === id) {
     var message = req.body.message;
     var status = req.body.status;
     db.Announcement.findOrCreate({where: {restaurantId: id, message: message, status: status}})
-    .then(() => res.status(201).send('OK'))
+    .then((data) => res.status(201).send(data))
     .catch((err) => res.status(400).send(`ERROR: ${err}`));
    } else {
-  res.status(401).send('Error authenticating ')
+     res.status(401).send('Error authenticating ')
     }
 });
 
@@ -203,6 +204,21 @@ app.patch('/announcements/:id', (req, res) => {
     console.log('err with patching announcement:', err)
     res.status(400).send('something went wrong')});
 });
+
+app.delete('/announcements/:id', (req, res) => {
+  db.Announcement.findOne({where: {id: req.params.id}})
+  .then(ann => {
+    if (ann.restaurantId === Number(req.user.restaurantId)) ann.destroy()
+    else {
+      throw('invalid auth with announcement deletion.')
+    }
+  })
+  .then(() => res.status(200).send('OK'))
+  .catch(err => {
+    console.log(err);
+    res.status(400).send('Something went wrong trying to delete the announcement')
+  });
+})
 
 
 //drop database and add dummy data
