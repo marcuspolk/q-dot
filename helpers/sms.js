@@ -1,6 +1,6 @@
 var request = require('request');
 
-const sendSMS = (number, restaurant) => {
+const sendSMS = (number, restaurant, name) => {
   // request.post('http://127.0.0.1:9090/text', {
   //   number: number,
   //   message: 'Hello from SPLASM',
@@ -18,7 +18,7 @@ const sendSMS = (number, restaurant) => {
       method: 'POST',
       form: {
         number: number,
-        message: `Your table is ready at ${restaurant}!`
+        message: `Hello ${name}! Your table is ready at ${restaurant}!`
       }
   };
 

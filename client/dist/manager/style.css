@@ -94,6 +94,14 @@ h2 {
   border-bottom: 1px solid gray;
 }
 
+.menu-container button {
+  background: white;
+  border: 1px solid gray;
+  border-radius: 10px;
+  padding: 5px 0;
+  margin-top: 10px;
+}
+
 h3 {
   margin-top: 50px;
 }
