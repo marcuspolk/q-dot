@@ -68,6 +68,20 @@ h2 {
   border-radius: 10px;
 }
 
+.customer-list-entry:hover {
+  cursor: move;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+
+.customer-list-entry:active {
+  cursor: move;
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+
 .menu {
   list-style: none;
   margin-bottom: 30px;
@@ -84,6 +98,10 @@ h2 {
   border: 1px solid gray;
   border-radius: 10px;
 }
+
+/*.menu li:active {
+  cursor: grabbing;
+}*/
 
 .menu li .price {
   padding: 5px;
