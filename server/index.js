@@ -283,10 +283,10 @@ app.put('/queues', (req, res) => {
   if (!req.query.queueId) {
     res.status(400).send('Bad Request');
   } else {
-    if (req.body.status === 'Seated') {
+    if (req.body.status === 'Ready') {
       db.Queue.find({where: {id: req.query.queueId}, include: [db.Restaurant, db.Customer]})
         .then(row => {
-          return sendSMS(row.customer.mobile, row.restaurant.name);
+          return sendSMS(row.customer.mobile, row.restaurant.name, row.customer.name);
         })
         .then(() => {
           return dbQuery.removeFromQueue(req.query.queueId, req.body.status)
