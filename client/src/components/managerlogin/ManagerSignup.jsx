@@ -9,7 +9,8 @@ class ManagerSignup extends React.Component {
       password: '',
       restaurant: '',
       city: '',
-      unauthorised: false
+      unauthorised: false,
+      restaurantList: [] 
     };
   }
 
@@ -17,6 +18,29 @@ class ManagerSignup extends React.Component {
     this.setState({
       [field]: event.target.value
     });
+    if (field === restaurant) {
+      $.ajax({
+        url: '/yelp',
+        method: 'GET',
+        data: {
+          term: this.state.restaurant,
+          location: this.state.city
+        },
+        success: result => {
+          console.log('successful GET request!', result);
+          var businessList = [];
+          result.businesses.forEach(function(business) {
+            businessList.push(business.name);
+          });
+          this.setState({
+            businessList: businessList
+          });
+        },
+        error: err => {
+          console.error(err);
+        }
+      });
+    }
   }
 
   submitHandler(event) {
@@ -83,11 +107,17 @@ class ManagerSignup extends React.Component {
           <input
             value={this.state.restaurant}
             type='text'
+            list = 'restaurants'
             className='form-control'
             placeholder='Restaurant'
             required
             onChange={(e) => this.updateInputFields(e, 'restaurant')}
           />
+          <datalist id='restaurants'>
+            this.state.restaurantList.map(restaurant => {
+              return (<option value={restaurant}/>)
+            });
+          </datalist>
           <button className='btn btn-lg btn-primary btn-block' type='submit'>Sign Up</button>
           <br />
           {
