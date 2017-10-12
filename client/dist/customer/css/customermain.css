@@ -9484,6 +9484,10 @@ nav li a {
   width: 100%;
 }
 
+.customer-nav-login li {
+  margin: 20px;
+}
+
 @media only screen and (min-width: 501px) {
   .customer-group-selector-container, .select-restaurant-container {
     position: relative;
@@ -9544,7 +9548,7 @@ nav li a {
   }
 
   .select-restaurant-container h4 {
-
+    font-family: Roboto, Helvetica Neue, sans-serif !important;
     color: #202020;
     font-size: 30px !important;
     line-height: 32px !important;
@@ -9979,6 +9983,7 @@ nav li a {
   line-height: 1 !important;
   left: 50%;
 }
+<<<<<<< HEAD
 
 .customer-home button {
   font-size: 14px;
@@ -10034,3 +10039,5 @@ body, .date-info {
 h1, h2, h3, h4, h5, .banner-title {
   font-family: 'Playfair Display', serif !important;
 }
+=======
+>>>>>>> Add signup and login buttons on nav page
