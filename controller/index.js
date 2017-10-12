@@ -142,6 +142,15 @@ const getCustomerInfo = (queueId) => {
 };
 
 // get info for one manager
+const getCustomerLoginInfo = (username) => {
+  return db.Customer.findOne({
+    where: {
+      username: username
+    }
+  });
+};
+
+// get info for one manager
 const getManagerInfo = (username) => {
   return db.Manager.findOne({
     where: {
@@ -176,6 +185,7 @@ module.exports = {
   updateRestaurantStatus,
   getQueueInfo,
   getCustomerInfo,
+  getCustomerLoginInfo,
   getManagerInfo,
   removeFromQueue,
   updateQueue

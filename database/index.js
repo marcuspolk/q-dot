@@ -57,7 +57,18 @@ const Customer = db.define('customer', {
     unique: true,
     allowNull: false
   },
-  email: Sequelize.STRING
+  email: Sequelize.STRING,
+  passwordHash: {
+    type: Sequelize.STRING,
+    defaultValue: null
+  },
+  passwordSalt: {
+    type: Sequelize.STRING,
+    defaultValue: null
+  },
+  username: {
+    type: Sequelize.STRING
+  }
 });
 
 //Queue Schema

@@ -9,6 +9,7 @@ class CustomerSignup extends React.Component {
       name: '',
       mobile: '',
       email: '',
+      username: '',
       unauthorised: false
     };
   }
@@ -22,7 +23,7 @@ class CustomerSignup extends React.Component {
   submitHandler(event) {
     event.preventDefault();
     $.ajax({
-      url: `/customer?username=${this.state.username}&password=${this.state.password}`,
+      url: `/customer?mobile=${this.state.mobile}&password=${this.state.password}&name=${this.state.name}&email=${this.state.email}&username=${this.state.username}`,
       method: 'POST',
       success: (data) => {
         this.setState({
@@ -78,6 +79,15 @@ class CustomerSignup extends React.Component {
             placeholder='Mobile Number'
             required autoFocus
             onChange={(e) => this.updateInputFields(e, 'mobile')}
+          />
+          <label className='sr-only'>Username</label>
+          <input
+            value={this.state.username}
+            type='text'
+            className='form-control'
+            placeholder='Username'
+            required
+            onChange={(e) => this.updateInputFields(e, 'username')}
           />
           <label className='sr-only'>Password</label>
           <input
