@@ -39,36 +39,49 @@ class ManagerSignup extends React.Component {
     });
     if (field === 'restaurant') {
 
-      // $.ajax({
-      //   url: '/yelp',
-      //   method: 'GET',
-      //   data: {
-      //     term: this.state.restaurant,
-      //     location: this.state.city
-      //   },
-      //   success: result => {
-      //     console.log('successful GET request!', result);
-      //     var restaurantList = [];
-      //     result.businesses.forEach(function(business) {
-      //       restaurantList.push(business.name);
-      //     });
-      //     this.setState({
-      //       restaurantList: restaurantList
-      //     });
-      //   },
-      //   error: err => {
-      //     console.error(err);
-      //   }
-      // });
     }
   }
+
+  // isRestaurantOnYelp() {
+  //   $.ajax({
+  //     url: '/yelp',
+  //     method: 'GET',
+  //     data: {
+  //       term: this.state.restaurant,
+  //       location: this.state.city
+  //     },
+  //     success: result => {
+  //       var restaurants = [];
+  //       result.businesses.forEach(function(business) {
+  //         restaurants.push(business.name);
+  //       });
+  //       return restaurants.indexOf(this.state.restaurant !== -1);
+  //     },
+  //     error: err => {
+  //       console.error(err);
+  //     }
+  //   });
+  // }
+
+  // addRestaurantInfoToDb() {
+  //   $.ajax({
+  //     url: '/yelp',
+  //     method: 'GET',
+  //     data: {
+  //       term: this.state.restaurant,
+  //       location: this.state.city
+  //     },
+  //     success: 
+  //   })
+  // }
 
   submitHandler(event) {
     event.preventDefault();
     $.ajax({
-      url: `/manager?username=${this.state.username}&password=${this.state.password}&restaurant=${this.state.restaurant}`,
+      url: `/manager?username=${this.state.username}&password=${this.state.password}&restaurant=${this.state.restaurant}&location=${this.state.city}`,
       method: 'POST',
       success: (data) => {
+        console.log('result from submitHandler request: ', data);
         this.setState({
           unauthorised: false
         });

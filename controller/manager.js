@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const db = require('../database/index.js');
 const Sequelize = require('sequelize');
+const yelp = require('../server/yelp.js');
 
 const genSalt = function() {
   return crypto.randomBytes(16).toString('hex');
@@ -17,6 +18,7 @@ const genPassword = function(password, salt) {
 };
 
 const addManager = function(username, passwordHash, passwordSalt, restaurant, cb) {
+  //console.log('inside addManager controller fn');
   db.Restaurant.findOne({
     where: { name: restaurant },
     attributes: ['id']
@@ -24,20 +26,26 @@ const addManager = function(username, passwordHash, passwordSalt, restaurant, cb
     if (restaurant) {
       return restaurant;
     } else {
-      // return addRestaurantToDBUsingYelpHelperFunction
+      return null;
     }
   })
     .then((restaurant) => {
-      db.Manager.findOrCreate({
-        where: {
-          username: username,
-          passwordHash: passwordHash,
-          passwordSalt: passwordSalt,
-          restaurantId: restaurant.id
-        }
-      })
+      //console.log('restaurant: ', restaurant);
+      if (restaurant) {
+        db.Manager.findOrCreate({
+          where: {
+            username: username,
+            passwordHash: passwordHash,
+            passwordSalt: passwordSalt,
+            restaurantId: restaurant.id
+          }
+        })
+      } else {
+        return null;
+      }
     })
     .then(result => {
+      //console.log('result of addManager controller fn: ', result);
       cb(result);
     })
     .catch(err => {

@@ -340,14 +340,26 @@ app.get('/logout', (req, res) => {
 });
 
 app.post('/manager', (req, res) => {
-  console.log('request', req.query);
+  //console.log('request', req.query);
   // if (req.user) {
-    if (!req.query.password || !req.query.username || !req.query.restaurant) {
+    //console.log('inside POST req to /manager');
+    if (!req.query.password || !req.query.username || !req.query.restaurant || !req.query.location) {
       res.sendStatus(400);
     } else {
       var passwordInfo = dbManagerQuery.genPassword(req.query.password, dbManagerQuery.genSalt());
       dbManagerQuery.addManager(req.query.username, passwordInfo.passwordHash, passwordInfo.salt, req.query.restaurant, (results) => {
-        res.send(results)
+        //console.log('inside POST req to /manager; result from manager controller: ', results);
+        if (results) {
+          res.send(results)
+        } else {
+          var params = {
+            term: req.query.restaurant,
+            location: req.query.location,
+            limit: 1
+          };
+          //console.log('calling yelp helper fn with: ', params);
+          yelp.get(req, res, params);
+        }
       });
     }
   // } else {

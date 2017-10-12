@@ -5,6 +5,7 @@ const express = require('express');
 
 const yelp = {
 	get: (req, res, params) => {
+		//console.log('inside yelp.js get fn');
 	 	const options = {
 			url: 'https://api.yelp.com/v3/businesses/search?',
 			headers: {
@@ -15,8 +16,11 @@ const yelp = {
 		const cb = function(error, response, body) {
 			if (error) {
 				console.error(error);
+				res.send(null);
+			} else {
+				console.log(JSON.parse(body));
+				res.send(JSON.parse(body));
 			}
-			res.send(JSON.parse(body));
 		};
 		
 	 	request(options, cb);
