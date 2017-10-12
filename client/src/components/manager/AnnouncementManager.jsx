@@ -14,7 +14,8 @@ class AnnouncementManager extends React.Component {
   }
 
   toggleStatus() {
-
+    // save this for later. for now they'll
+    // have to edit manually through modal.
   }
 
   populateModal(announcement) {
@@ -28,7 +29,7 @@ class AnnouncementManager extends React.Component {
       console.log('announcement set to: ', announcement);
       console.log('modalMessage: ', this.state.modalMessage);
     } else {
-    // if not, start a new announcement, setState
+    // if not, created a new announcement, setState
       this.setState(
         {modalAnnouncement: null,
         modalMessage: '',
@@ -39,8 +40,18 @@ class AnnouncementManager extends React.Component {
   }
 
   submitAnnouncement() {
-    if (modalAnnouncement) {
-      // patch.
+    if (this.state.modalAnnouncement) {
+      // ajax patch..
+      // client side change. this is ugly. please let me know if there's a better way. -marcus
+      var announcements = this.state.announcements.map(announcement => {
+        if (announcement.id === this.state.modalAnnouncement.id) {
+          announcement.message = this.state.modalMessage;
+          announcement.status = this.state.modalStatus;
+        }
+        return announcement;
+      });
+
+      this.setState({announcements: announcements})
     } else {
       // post.
     }
@@ -93,7 +104,7 @@ class AnnouncementManager extends React.Component {
                     <div className="form-group">
                       <div className="btn-group" data-toggle="buttons">
                             <label onClick={() => this.changeModalStatus('active')} className="btn btn-primary">
-                              <input type="radio" name="options" id="active" checked="true"/> Active
+                              <input type="radio" name="options" id="active"/> Active
                             </label>
                             <label onClick={() => this.changeModalStatus('inactive')} className="btn btn-primary">
                               <input type="radio" name="options" id="inactive"/> Inactive
@@ -112,7 +123,7 @@ class AnnouncementManager extends React.Component {
 
               </div>
               <div className="modal-footer">
-                <button className="btn btn-success" data-dismiss="modal" onClick={() => console.log('put something here')}>Submit</button>
+                <button className="btn btn-success" data-dismiss="modal" onClick={() => this.submitAnnouncement()}>Submit</button>
                 <button type="button" className="btn btn-default" data-dismiss="modal">Cancel</button>
               </div>
             </div>
