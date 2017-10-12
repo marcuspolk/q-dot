@@ -106,44 +106,50 @@ app.get('*/menu/:restaurantId', (req, res) => {
 
 app.delete('*/menu/:menuId', (req, res) => {
   if (req.user) {
-    dbMenuQuery.updateMenu(req.params.menuId)
+    dbMenuQuery.removeMenuItem(req.params.menuId)
       .then(results => {
-        res.send(results);
+        res.sendStatus(200);
       })
       .catch(err => {
         console.log('error deleting menu item', err);
       });
   } else {
-    res.sendStatus(404);
+    res.sendStatus(418);
   }
 });
 
 app.put('*/menu/:menuId', (req, res) => {
   if (req.user) {
-    dbMenuQuery.updateMenu(req.params.menuId, req.query.field, req.query.newVal)
+    dbMenuQuery.updateMenu(req.params.menuId, req.query.field, req.query[req.query.field])
       .then(results => {
-        res.send(results);
+        res.sendStatus(201);
       })
       .catch(err => {
         console.log('error updating menu item', err);
       });
   } else {
-    res.sendStatus(404);
+    res.sendStatus(418);
   }
 });
 
 app.post('*/menu/:restaurantId', (req, res) => {
-  // req.query should look like: {dish: '', description: '', restaurantId: 0}
+  // req.query should look like: {dish: '', description: '', price: 0, restaurantId: 0}
+  let menuObj = {
+    dish: req.query.dish,
+    description: req.query.description,
+    price: req.query.price,
+    restaurantId: req.params.restaurantId
+  };
   if (req.user) {
-    dbMenuQuery.addMenuItem(req.params.restaurantId, req.query)
+    dbMenuQuery.addMenuItem(menuObj)
       .then(results => {
-        res.send(results);
+        res.sendStatus(201);
       })
       .catch(err => {
         console.log('error adding menu item', err);
       });
   } else {
-    res.sendStatus(404);
+    res.sendStatus(418);
   }
 });
 

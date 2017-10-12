@@ -7,9 +7,9 @@ const getMenuForRestaurant = (restaurantId) => {
   });
 };
 
-const addMenuItem = (restaurantId, menuObj) => {
-  return db.findOrCreate({
-    where: menuObj // menu obj should look like: {dish: '', description: '', restaurantId: 0}
+const addMenuItem = (menuObj) => {
+  return db.Menu.findOrCreate({
+    where: menuObj // menu obj should look like: {dish: '', description: '', price: 0}
   });
 };
 

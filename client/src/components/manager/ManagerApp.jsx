@@ -121,6 +121,20 @@ class ManagerApp extends React.Component {
     });
   }
 
+  updateMenu(menuItem, params) {
+    let id = menuItem.type === 'DELETE' || menuItem.type === 'PUT' ? menuItem.id : this.state.restaurantId;
+    $.ajax({
+      url: `./menu/${id}?${$.param(params)}`,
+      type: menuItem.type,
+      success: (data) => {
+        this.getMenu();
+      },
+      error: (err) => {
+        console.log('Something went wrong when trying to update ' + (menuItem.dish || ' the menu'), err);
+      }
+    })
+  }
+
   updateQueue(queryArray) {
     queryArray.forEach((query) => {
       $.ajax({
@@ -150,7 +164,7 @@ class ManagerApp extends React.Component {
               <div id="number-in-queue">{this.state.restaurantInfo.queues ? this.state.restaurantInfo.queues.length : '0'}</div>
               <h2>Approximate Wait Time</h2>
               <div id="number-in-queue">{this.state.restaurantInfo.total_wait}</div>
-              <MenuList menu={this.state.menu}/>
+              <MenuList updateMenu={this.updateMenu.bind(this)} menu={this.state.menu}/>
               <ManagerAudit/>
             </div>
             <div className="col-md-6">
