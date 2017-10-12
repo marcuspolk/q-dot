@@ -207,9 +207,17 @@ app.patch('/announcements/:id', (req, res) => {
 
 app.delete('/announcements/:id', (req, res) => {
   db.Announcement.findOne({where: {id: req.params.id}})
-  .then(ann => ann.destroy())
+  .then(ann => {
+    if (ann.restaurantId === Number(req.user.restaurantId)) ann.destroy()
+    else {
+      throw('invalid auth with announcement deletion.')
+    }
+  })
   .then(() => res.status(200).send('OK'))
-  .catch(err => res.status(400).send('Something went wrong trying to delete the announcement'));
+  .catch(err => {
+    console.log(err);
+    res.status(400).send('Something went wrong trying to delete the announcement')
+  });
 })
 
 
