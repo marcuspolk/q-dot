@@ -4,6 +4,7 @@ import StatusSwitch from './StatusSwitch.jsx';
 import AddToQueue from './AddToQueue.jsx';
 import Nav from './Nav.jsx';
 import ManagerAudit from './ManagerAudit.jsx';
+import AnnouncementManager from './AnnouncementManager.jsx';
 import $ from 'jquery';
 import io from 'socket.io-client';
 
@@ -136,6 +137,9 @@ class ManagerApp extends React.Component {
             </div>
             <div className="col-md-6">
               <CustomerList updateQueue={this.updateQueue.bind(this)} queues={this.state.queues} addCustomer={this.addToQueue.bind(this)} removeCustomer={this.removeCustomer.bind(this)} notiCustomer={this.notiCustomer.bind(this)}/>
+            </div>
+            <div>
+              <AnnouncementManager restaurantId={this.state.restaurantId}/>
             </div>
           </div>
         </div>
