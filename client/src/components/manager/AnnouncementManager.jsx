@@ -1,6 +1,8 @@
 import React from 'react';
 import $ from 'jquery';
 class AnnouncementManager extends React.Component {
+  // TODO: Put the modal into its own component.
+
   constructor(props) {
     super(props);
     this.state = {
@@ -37,11 +39,15 @@ class AnnouncementManager extends React.Component {
   }
 
   submitAnnouncement() {
-
+    if (modalAnnouncement) {
+      // patch.
+    } else {
+      // post.
+    }
   }
 
   delete() {
-
+    // woo.
   }
 
   componentDidMount() {
@@ -66,6 +72,11 @@ class AnnouncementManager extends React.Component {
     });
   }
 
+  changeModalStatus(status) {
+    this.setState({modalStatus: status});
+    console.log('changed status to: ', status);
+  }
+
   render() {
     return (
       <div>
@@ -80,8 +91,17 @@ class AnnouncementManager extends React.Component {
                 <div className="modal-body">
                   <form>
                     <div className="form-group">
-                      <label htmlFor="recipient-name" className="form-control-label">Recipient:</label>
-                      <input type="text" className="form-control" id="recipient-name"/>
+                      <div className="btn-group" data-toggle="buttons">
+                            <label onClick={() => this.changeModalStatus('active')} className="btn btn-primary">
+                              <input type="radio" name="options" id="active" checked="true"/> Active
+                            </label>
+                            <label onClick={() => this.changeModalStatus('inactive')} className="btn btn-primary">
+                              <input type="radio" name="options" id="inactive"/> Inactive
+                            </label>
+                            <label onClick={() => this.changeModalStatus('default')} className="btn btn-primary">
+                              <input type="radio" name="options" id="default"/> Default
+                            </label>
+                      </div>
                     </div>
                     <div className="form-group">
                       <label htmlFor="message-text" className="form-control-label">Message:</label>
@@ -127,6 +147,7 @@ class AnnouncementManager extends React.Component {
           </div>
         </div>
         {this.state.modalMessage}
+        {this.state.modalStatus}
       </div>
     );
   }
