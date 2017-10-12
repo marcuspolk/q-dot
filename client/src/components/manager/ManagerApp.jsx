@@ -4,6 +4,7 @@ import StatusSwitch from './StatusSwitch.jsx';
 import AddToQueue from './AddToQueue.jsx';
 import Nav from './Nav.jsx';
 import ManagerAudit from './ManagerAudit.jsx';
+import MenuList from './MenuList.jsx';
 import AnnouncementManager from './AnnouncementManager.jsx';
 import $ from 'jquery';
 import io from 'socket.io-client';
@@ -16,7 +17,8 @@ class ManagerApp extends React.Component {
     this.state = {
       queues: undefined,
       restaurantInfo: {},
-      restaurantId: window.location.search ? Number(new URLSearchParams(window.location.search).get('restaurantId')) : ''
+      restaurantId: window.location.search ? Number(new URLSearchParams(window.location.search).get('restaurantId')) : '',
+      menu: []
     };
 
     // socket initialize
@@ -29,6 +31,7 @@ class ManagerApp extends React.Component {
   }
 
   componentDidMount() {
+    this.getMenu();
     this.reloadData();
   }
 
@@ -87,7 +90,6 @@ class ManagerApp extends React.Component {
     $.ajax({
       url: `/restaurants?restaurantId=${this.state.restaurantId}`,
       success: (data) => {
-        console.log(data);
         this.setState(
           {
             restaurantInfo: data,
@@ -97,6 +99,20 @@ class ManagerApp extends React.Component {
         this.socket.emit('manager report', this.state.restaurantInfo.id);
         let imageURL = `url(/${data.image})`;
         $('.jumbotron-billboard').css('background', imageURL);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
+  getMenu() {
+    $.ajax({
+      url: `./menu/${this.state.restaurantId}`,
+      success: (data) => {
+        this.setState({
+          menu: data
+        });
       },
       error: (err) => {
         console.log(err);
@@ -133,7 +149,9 @@ class ManagerApp extends React.Component {
               <div id="number-in-queue">{this.state.restaurantInfo.queues ? this.state.restaurantInfo.queues.length : '0'}</div>
               <h2>Approximate Wait Time</h2>
               <div id="number-in-queue">{this.state.restaurantInfo.total_wait}</div>
-              <ManagerAudit />
+              <h3>Menu</h3>
+              <MenuList menu={this.state.menu}/>
+              <ManagerAudit/>
             </div>
             <div className="col-md-6">
               <CustomerList updateQueue={this.updateQueue.bind(this)} queues={this.state.queues} addCustomer={this.addToQueue.bind(this)} removeCustomer={this.removeCustomer.bind(this)} notiCustomer={this.notiCustomer.bind(this)}/>
