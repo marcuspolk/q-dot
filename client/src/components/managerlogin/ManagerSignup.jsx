@@ -18,7 +18,7 @@ class ManagerSignup extends React.Component {
     this.setState({
       [field]: event.target.value
     });
-    if (field === restaurant) {
+    if (field === 'restaurant') {
       $.ajax({
         url: '/yelp',
         method: 'GET',
@@ -28,12 +28,12 @@ class ManagerSignup extends React.Component {
         },
         success: result => {
           console.log('successful GET request!', result);
-          var businessList = [];
+          var restaurantList = [];
           result.businesses.forEach(function(business) {
-            businessList.push(business.name);
+            restaurantList.push(business.name);
           });
           this.setState({
-            businessList: businessList
+            restaurantList: restaurantList
           });
         },
         error: err => {
