@@ -137,8 +137,6 @@ class ManagerApp extends React.Component {
             </div>
             <div className="col-md-6">
               <CustomerList updateQueue={this.updateQueue.bind(this)} queues={this.state.queues} addCustomer={this.addToQueue.bind(this)} removeCustomer={this.removeCustomer.bind(this)} notiCustomer={this.notiCustomer.bind(this)}/>
-            </div>
-            <div>
               <AnnouncementManager restaurantId={this.state.restaurantId}/>
             </div>
           </div>

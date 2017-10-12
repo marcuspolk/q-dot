@@ -5,8 +5,7 @@ class AnnouncementManager extends React.Component {
     super(props);
     this.state = {
       announcements: []
-    }
-
+    };
   }
 
   componentDidMount() {
@@ -39,6 +38,18 @@ class AnnouncementManager extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
+                    {this.state.announcements.map(announcement => {
+                      return (
+                        <tr key={announcement.id}>
+                          <td>{announcement.id}</td>
+                          <td>{announcement.message}</td>
+                          <td>{announcement.status}</td>
+                          <td>{announcement.updatedAt}</td>
+                          <td>edit</td>
+                          <td>deactivate</td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
