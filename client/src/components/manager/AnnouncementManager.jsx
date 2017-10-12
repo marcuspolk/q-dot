@@ -7,7 +7,7 @@ class AnnouncementManager extends React.Component {
     super(props);
     this.state = {
       announcements: [],
-      modalMessage: 'okkaaa',
+      modalMessage: '',
       modalStatus: '',
       modalAnnouncement: null
     };

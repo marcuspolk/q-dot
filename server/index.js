@@ -186,6 +186,16 @@ app.post('/restaurant/:id/announcements', (req, res) => {
     }
 });
 
+app.patch('/announcements/:id', (req, res) => {
+  var message = req.body.message;
+  var status = req.body.status;
+
+  db.Announcement.findOne({where: {id: req.params.id}})
+  .then(ann => ann.update({message: message, status: status}))
+  .then(db.Announcement.findOne({where: {id: req.params.id}}))
+  .then(updatedAnn => res.json(updatedAnn));
+});
+
 
 //drop database and add dummy data
 app.post('/dummydata', (req, res) => {
