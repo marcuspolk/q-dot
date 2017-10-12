@@ -26,8 +26,6 @@ class AnnouncementManager extends React.Component {
         modalMessage: announcement.message,
         modalStatus: announcement.status}
       );
-      console.log('announcement set to: ', announcement);
-      console.log('modalMessage: ', this.state.modalMessage);
     } else {
     // if not, created a new announcement, setState
       this.setState(
@@ -35,7 +33,6 @@ class AnnouncementManager extends React.Component {
         modalMessage: '',
         modalStatus: ''}
       );
-      console.log('no announcement or something');
     }
   }
 
@@ -82,7 +79,6 @@ class AnnouncementManager extends React.Component {
       method: 'GET',
       success: (announcements) => {
         this.state.announcements = announcements;
-        console.log(announcements);
       },
       error:  (err) => {
         console.log('err', err);
@@ -98,7 +94,6 @@ class AnnouncementManager extends React.Component {
 
   changeModalStatus(status) {
     this.setState({modalStatus: status});
-    console.log('changed status to: ', status);
   }
 
   render() {
