@@ -2,7 +2,7 @@ import React from 'react';
 
 const CustomerListEntry = (props) => {
   return (
-    <div className="row panel-body">
+    <div className="row panel-body customer-list-entry">
       <div className="col-md-7">
         <h3 className="customer-entry-title">{props.queue.customer.name}</h3>
         <div className="row">

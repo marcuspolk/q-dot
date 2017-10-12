@@ -119,6 +119,17 @@ const Announcement = db.define('announcement', {
   status: Sequelize.STRING
 });
 
+const Menu = db.define('menu', {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  dish: Sequelize.STRING,
+  description: Sequelize.STRING,
+  price: Sequelize.INTEGER
+});
+
 // Relationship between Restaurant & Queue
 Restaurant.hasMany(Queue);
 Queue.belongsTo(Restaurant);
@@ -139,12 +150,17 @@ Manager.belongsTo(Restaurant);
 Restaurant.hasMany(Announcement);
 Announcement.belongsTo(Restaurant);
 
+// Relationship between Restaurant & Menu
+Restaurant.hasMany(Menu);
+Menu.belongsTo(Restaurant);
+
 Customer.sync()
   .then(() => Restaurant.sync())
   .then(() => Manager.sync())
   .then(() => ManagerAudit.sync())
   .then(() => Queue.sync())
   .then(() => Announcement.sync())
+  .then(() => Menu.sync())
   .catch(error => console.log('error syncing data', error));
 
 module.exports = {
@@ -155,5 +171,6 @@ module.exports = {
   Restaurant,
   Manager,
   ManagerAudit,
-  Announcement
+  Announcement,
+  Menu
 };

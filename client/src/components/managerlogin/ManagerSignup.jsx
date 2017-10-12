@@ -114,9 +114,9 @@ class ManagerSignup extends React.Component {
             onChange={(e) => this.updateInputFields(e, 'restaurant')}
           />
           <datalist id='restaurants'>
-            this.state.restaurantList.map(restaurant => {
-              return (<option value={restaurant}/>)
-            });
+            {this.state.restaurantList.map(restaurant => {
+              return (<option value={restaurant}/>);
+            })}
           </datalist>
           <button className='btn btn-lg btn-primary btn-block' type='submit'>Sign Up</button>
           <br />
