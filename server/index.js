@@ -94,6 +94,7 @@ app.get('/restaurants', (req, res) => {
   }
 });
 
+
 app.get('*/menu/:restaurantId', (req, res) => {
   dbMenuQuery.getMenuForRestaurant(req.params.restaurantId)
     .then(results => {
@@ -203,6 +204,13 @@ app.patch('/announcements/:id', (req, res) => {
     console.log('err with patching announcement:', err)
     res.status(400).send('something went wrong')});
 });
+
+app.delete('/announcements/:id', (req, res) => {
+  db.Announcement.findOne({where: {id: req.params.id}})
+  .then(ann => ann.destroy())
+  .then(() => res.status(200).send('OK'))
+  .catch(err => res.status(400).send('Something went wrong trying to delete the announcement'));
+})
 
 
 //drop database and add dummy data

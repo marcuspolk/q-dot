@@ -13,7 +13,28 @@ class AnnouncementManager extends React.Component {
     };
   }
 
-  toggleStatus() {
+  deleteAnnouncement(id) {
+    $.ajax({
+      url: `/announcements/${id}`,
+      method: 'DELETE',
+      success: () => {
+        //splice from announcements array.
+        var anns = this.state.announcements;
+        for (var i = 0; i < anns.length; i++) {
+          if (anns[i].id === id) {
+            anns.splice(i, 1);
+            break;
+          }
+        }
+        this.setState({
+          announcements: anns
+        });
+        console.log('it deleted');
+      },
+      error: (err) => {
+        console.log('error deleting announcement. ', err);
+      }
+    })
     // save this for later. for now they'll
     // have to edit manually through modal.
   }
@@ -88,10 +109,6 @@ class AnnouncementManager extends React.Component {
         }
       });
     }
-  }
-
-  delete() {
-    // woo.
   }
 
   componentDidMount() {
@@ -178,7 +195,7 @@ class AnnouncementManager extends React.Component {
                       <td>{announcement.status}</td>
                       <td>{announcement.updatedAt}</td>
                       <td><button data-toggle="modal" data-target="#announcement-editor" onClick={()=> this.populateModal(announcement)}>edit</button></td>
-                      <td onClick={this.toggleStatus.bind(this)}>toggle</td>
+                      <td onClick={() => this.deleteAnnouncement(announcement.id)}><button>Delete</button></td>
                     </tr>
                   );
                 })}
