@@ -15,6 +15,6 @@ const phoneNumberFormatter = (number) => {
 };
 
 module.exports = {
-  nameFormatter: nameFormatter,
-  phoneNumberFormatter: phoneNumberFormatter
+  nameFormatter,
+  phoneNumberFormatter
 };
