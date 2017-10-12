@@ -5,11 +5,13 @@ class AnnouncementManager extends React.Component {
     super(props);
     this.state = {
       announcements: [],
+      modalMessage: 'okkaaa',
+      modalStatus: '',
       modalAnnouncement: null
     };
   }
 
-  updateStatus() {
+  toggleStatus() {
 
   }
 
@@ -17,12 +19,18 @@ class AnnouncementManager extends React.Component {
     // if announcement present, state is edit.
     if (announcement) {
       this.setState(
-        {modalAnnouncement: announcement}
+        {modalAnnouncement: announcement,
+        modalMessage: announcement.message,
+        modalStatus: announcement.status}
       );
+      console.log('announcement set to: ', announcement);
+      console.log('modalMessage: ', this.state.modalMessage);
     } else {
     // if not, start a new announcement, setState
       this.setState(
-        {modalAnnouncement: null}
+        {modalAnnouncement: null,
+        modalMessage: '',
+        modalStatus: ''}
       );
       console.log('no announcement or something');
     }
@@ -52,6 +60,12 @@ class AnnouncementManager extends React.Component {
     });
   }
 
+  handleChange(e, prop) {
+    this.setState({
+
+    });
+  }
+
   render() {
     return (
       <div>
@@ -63,7 +77,19 @@ class AnnouncementManager extends React.Component {
                 <h3 className="modal-title">Announcement Editor</h3>
               </div>
               <div className="modal-body">
-                <p className="warning-content">FORM GOES HERE</p>
+                <div className="modal-body">
+                  <form>
+                    <div className="form-group">
+                      <label htmlFor="recipient-name" className="form-control-label">Recipient:</label>
+                      <input type="text" className="form-control" id="recipient-name"/>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="message-text" className="form-control-label">Message:</label>
+                      <textarea className="form-control" id="message-text" onChange={this.handleChange} value={this.state.modalMessage}></textarea>
+                    </div>
+                  </form>
+                </div>
+
               </div>
               <div className="modal-footer">
                 <button className="btn btn-success" data-dismiss="modal" onClick={() => console.log('put something here')}>Submit</button>
@@ -92,7 +118,7 @@ class AnnouncementManager extends React.Component {
                       <td>{announcement.status}</td>
                       <td>{announcement.updatedAt}</td>
                       <td><button data-toggle="modal" data-target="#announcement-editor" onClick={()=> this.populateModal.call(this,announcement)}>edit</button></td>
-                      <td>deactivate</td>
+                      <td onClick={this.toggleStatus.bind(this)}>toggle</td>
                     </tr>
                   );
                 })}
@@ -100,6 +126,7 @@ class AnnouncementManager extends React.Component {
             </table>
           </div>
         </div>
+        {this.state.modalMessage}
       </div>
     );
   }
