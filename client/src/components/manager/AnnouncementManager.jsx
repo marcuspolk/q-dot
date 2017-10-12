@@ -42,16 +42,29 @@ class AnnouncementManager extends React.Component {
   submitAnnouncement() {
     if (this.state.modalAnnouncement) {
       // ajax patch..
-      // client side change. this is ugly. please let me know if there's a better way. -marcus
-      var announcements = this.state.announcements.map(announcement => {
-        if (announcement.id === this.state.modalAnnouncement.id) {
-          announcement.message = this.state.modalMessage;
-          announcement.status = this.state.modalStatus;
+      $.ajax({
+        url: `/announcements/${this.state.modalAnnouncement.id}`,
+        method: 'PATCH',
+        data: {
+            message: this.state.modalMessage,
+            status: this.state.modalStatus
+        },
+        success: (ann) => {
+          // might even want to use the data from this new ann.
+          var announcements = this.state.announcements.map(announcement => {
+            if (announcement.id === this.state.modalAnnouncement.id) {
+              announcement.message = this.state.modalMessage;
+              announcement.status = this.state.modalStatus;
+            }
+            return announcement;
+          });
+          this.setState({announcements: announcements})
+        },
+        error: (err) => {
+          console.log('error patching. ', err);
         }
-        return announcement;
       });
-
-      this.setState({announcements: announcements})
+      // client side change. this seems ugly. please let me know if there's a better way. -marcus
     } else {
       // post.
     }
@@ -157,8 +170,6 @@ class AnnouncementManager extends React.Component {
             </table>
           </div>
         </div>
-        {this.state.modalMessage}
-        {this.state.modalStatus}
       </div>
     );
   }
