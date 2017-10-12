@@ -300,7 +300,7 @@ To add dummy data to the database, use postman or curl to make a POST request to
 
 ## Development
 
-## Running Textbelt SMS Server
+## Running [Textbelt](https://github.com/typpo/textbelt) SMS Server
 ```sh
 brew install redis
 redis-server /usr/local/etc/redis.conf
