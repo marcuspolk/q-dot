@@ -10,7 +10,7 @@ var express = require('express')
   , redis = require('redis-url').connect()
   , spawn = require('child_process').spawn
   , text = require('../lib/text')
-  , bodyParser = require('body-parser');;
+  , bodyParser = require('body-parser');
 
 // Express config
 app.set('views', __dirname + '/views');
