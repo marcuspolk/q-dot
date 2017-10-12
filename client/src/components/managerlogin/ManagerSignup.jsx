@@ -10,8 +10,27 @@ class ManagerSignup extends React.Component {
       restaurant: '',
       city: '',
       unauthorised: false,
-      restaurantList: [] 
+      restaurantList: []
     };
+  }
+
+  componentDidMount() {
+    $.ajax({
+      url: '/restaurants',
+      method: 'GET',
+      success: results => {
+        var restaurantList = [];
+        results.forEach(restaurant => {
+          restaurantList.push(restaurant.name);
+        });
+        this.setState({
+          restaurantList: restaurantList
+        });
+      },
+      error: err => {
+        console.error(err);
+      }
+    });
   }
 
   updateInputFields(event, field) {
@@ -19,27 +38,28 @@ class ManagerSignup extends React.Component {
       [field]: event.target.value
     });
     if (field === 'restaurant') {
-      $.ajax({
-        url: '/yelp',
-        method: 'GET',
-        data: {
-          term: this.state.restaurant,
-          location: this.state.city
-        },
-        success: result => {
-          console.log('successful GET request!', result);
-          var restaurantList = [];
-          result.businesses.forEach(function(business) {
-            restaurantList.push(business.name);
-          });
-          this.setState({
-            restaurantList: restaurantList
-          });
-        },
-        error: err => {
-          console.error(err);
-        }
-      });
+
+      // $.ajax({
+      //   url: '/yelp',
+      //   method: 'GET',
+      //   data: {
+      //     term: this.state.restaurant,
+      //     location: this.state.city
+      //   },
+      //   success: result => {
+      //     console.log('successful GET request!', result);
+      //     var restaurantList = [];
+      //     result.businesses.forEach(function(business) {
+      //       restaurantList.push(business.name);
+      //     });
+      //     this.setState({
+      //       restaurantList: restaurantList
+      //     });
+      //   },
+      //   error: err => {
+      //     console.error(err);
+      //   }
+      // });
     }
   }
 
