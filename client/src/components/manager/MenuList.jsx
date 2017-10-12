@@ -13,11 +13,17 @@ class MenuList extends React.Component {
 
   render() {
     return (
-      <ul className="menu">
-        {this.props.menu.map((menuItem, index) => {
-          return (<MenuListItem key={index} menuItem={menuItem}/>);
-        })}
-      </ul>
+      <div className="col-xs-12 menu-container">
+        <div className="col-xs-12">
+          <h3 className="col-xs-8">Menu</h3>
+          <button className="col-xs-4">Add Dish</button>
+        </div>
+        <ul className="menu col-xs-12">
+          {this.props.menu.map((menuItem, index) => {
+            return (<MenuListItem key={index} menuItem={menuItem}/>);
+          })}
+        </ul>
+      </div>
     );
   }
 }

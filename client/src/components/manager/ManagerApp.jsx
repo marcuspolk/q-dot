@@ -52,6 +52,7 @@ class ManagerApp extends React.Component {
   notiCustomer(queueId) {
     console.log(`noti sended to queueId: ${queueId}`);
     this.socket.emit('noti customer', queueId);
+    this.removeCustomer(queueId, 'Ready');
   }
 
   addToQueue(customer) {
@@ -149,7 +150,6 @@ class ManagerApp extends React.Component {
               <div id="number-in-queue">{this.state.restaurantInfo.queues ? this.state.restaurantInfo.queues.length : '0'}</div>
               <h2>Approximate Wait Time</h2>
               <div id="number-in-queue">{this.state.restaurantInfo.total_wait}</div>
-              <h3>Menu</h3>
               <MenuList menu={this.state.menu}/>
               <ManagerAudit/>
             </div>
