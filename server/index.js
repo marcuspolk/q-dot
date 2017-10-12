@@ -173,16 +173,16 @@ app.get('/restaurant/:id/announcements', (req, res) => {
 });
 
 app.post('/restaurant/:id/announcements', (req, res) => {
-  var id = req.params.id;
+  var id = Number(req.params.id);
 
   if (req.user && req.user.restaurantId === id) {
     var message = req.body.message;
     var status = req.body.status;
     db.Announcement.findOrCreate({where: {restaurantId: id, message: message, status: status}})
-    .then(() => res.status(201).send('OK'))
+    .then((data) => res.status(201).send(data))
     .catch((err) => res.status(400).send(`ERROR: ${err}`));
    } else {
-  res.status(401).send('Error authenticating ')
+     res.status(401).send('Error authenticating ')
     }
 });
 
