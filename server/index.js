@@ -7,6 +7,7 @@ const port = process.env.PORT || 1337;
 const db = require('../database/index.js');
 const dbQuery = require('../controller/index.js');
 const dbManagerQuery = require('../controller/manager.js');
+const dbMenuQuery = require('../controller/menu.js');
 const dummyData = require('../database/dummydata.js');
 const helpers = require('../helpers/helpers.js');
 const bodyParser = require('body-parser');
@@ -90,6 +91,59 @@ app.get('/restaurants', (req, res) => {
         console.log('error getting info for all restaurants', error);
         res.send('failed for info on all restaurants');
       });
+  }
+});
+
+app.get('*/menu/:restaurantId', (req, res) => {
+  dbMenuQuery.getMenuForRestaurant(req.params.restaurantId)
+    .then(results => {
+      res.send(results);
+    })
+    .catch(err => {
+      console.log('error getting menu for restaurant', err);
+    });
+});
+
+app.delete('*/menu/:menuId', (req, res) => {
+  if (req.user) {
+    dbMenuQuery.updateMenu(req.params.menuId)
+      .then(results => {
+        res.send(results);
+      })
+      .catch(err => {
+        console.log('error deleting menu item', err);
+      });
+  } else {
+    res.sendStatus(404);
+  }
+});
+
+app.put('*/menu/:menuId', (req, res) => {
+  if (req.user) {
+    dbMenuQuery.updateMenu(req.params.menuId, req.query.field, req.query.newVal)
+      .then(results => {
+        res.send(results);
+      })
+      .catch(err => {
+        console.log('error updating menu item', err);
+      });
+  } else {
+    res.sendStatus(404);
+  }
+});
+
+app.post('*/menu/:restaurantId', (req, res) => {
+  // req.query should look like: {dish: '', description: '', restaurantId: 0}
+  if (req.user) {
+    dbMenuQuery.addMenuItem(req.params.restaurantId, req.query)
+      .then(results => {
+        res.send(results);
+      })
+      .catch(err => {
+        console.log('error adding menu item', err);
+      });
+  } else {
+    res.sendStatus(404);
   }
 });
 

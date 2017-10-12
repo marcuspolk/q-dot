@@ -26,6 +26,15 @@ const addRestaurants = () => {
     });
 };
 
+const addMenus = () => {
+  return db.Menu.findOrCreate({where: {dish: 'Sandwich', description: 'Two pieces of bread with some stuff in between them.', price: 12, restaurantId: 1}})
+    .then(() => db.Menu.findOrCreate({where: {dish: 'Cake', description: 'A sweet spongey thing with frosting everywhere.', price: 9, restaurantId: 2}}))
+    .then(() => db.Menu.findOrCreate({where: {dish: 'Potato', description: 'A vegetable that when raw tastes like dirt and when fried tastes pretty good.', price: 100, restaurantId: 1}}))
+    .catch(err => {
+      console.log('error adding dummy menus', err);
+    });
+};
+
 const addManager = () => {
   return db.Manager.findOrCreate({
     where: {
@@ -48,6 +57,7 @@ const dropDB = () => {
   return db.Queue.drop()
     .then(() => db.Customer.drop())
     .then(() => db.Announcement.drop())
+    .then(() => db.Menu.drop())
     .then(() => db.ManagerAudit.drop())
     .then(() => db.Manager.drop())
     .then(() => db.Restaurant.drop())
@@ -61,6 +71,8 @@ const dropDB = () => {
     .then(() => addToQueue())
     .then(() => db.Announcement.sync({force: true}))
     .then(() => addAnnouncements())
+    .then(() => db.Menu.sync({force:true}))
+    .then(() => addMenus())
     .catch(err => {
       console.log('error syncing dummy data', err);
     });

@@ -67,7 +67,7 @@ class ManagerAudit extends React.Component {
           </div>
         </div>
         <h3>Manager Login History</h3>
-        <div className="panel panel-default">
+        <div className="panel panel-default manager-login-history">
           <div className="table-responsive">
             <table className="table table-striped">
               <thead>

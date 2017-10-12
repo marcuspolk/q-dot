@@ -62,7 +62,7 @@ class CustomerList extends React.Component {
           <h3 className="customer-list-head col-md-8">Customers in Queue</h3>
           <AddToQueue className="col-md-4" addCustomer={this.props.addCustomer.bind(this)}/>
         </div>
-        <div className="panel panel-default" id="sortable">
+        <div className="panel panel-default" id="sortable" style={{border: 'none'}}>
           {entries}
         </div>
 
