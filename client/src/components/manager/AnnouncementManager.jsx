@@ -60,9 +60,9 @@ class AnnouncementManager extends React.Component {
     });
   }
 
-  handleChange(e, prop) {
+  changeModalMessage(e) {
     this.setState({
-
+      modalMessage: e.target.value
     });
   }
 
@@ -85,7 +85,7 @@ class AnnouncementManager extends React.Component {
                     </div>
                     <div className="form-group">
                       <label htmlFor="message-text" className="form-control-label">Message:</label>
-                      <textarea className="form-control" id="message-text" onChange={this.handleChange} value={this.state.modalMessage}></textarea>
+                      <textarea className="form-control" id="message-text" onChange={(e) => this.changeModalMessage(e)} value={this.state.modalMessage}></textarea>
                     </div>
                   </form>
                 </div>
@@ -117,7 +117,7 @@ class AnnouncementManager extends React.Component {
                       <td>{announcement.message}</td>
                       <td>{announcement.status}</td>
                       <td>{announcement.updatedAt}</td>
-                      <td><button data-toggle="modal" data-target="#announcement-editor" onClick={()=> this.populateModal.call(this,announcement)}>edit</button></td>
+                      <td><button data-toggle="modal" data-target="#announcement-editor" onClick={()=> this.populateModal(announcement)}>edit</button></td>
                       <td onClick={this.toggleStatus.bind(this)}>toggle</td>
                     </tr>
                   );
