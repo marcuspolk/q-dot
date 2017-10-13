@@ -3,7 +3,7 @@ import StatusSwitch from './StatusSwitch.jsx';
 
 const Nav = (props) => {
   return (
-    <nav className="navbar navbar-default justify-content-end">
+    <nav className="navbar navbar-default justify-content-end col-xs-12">
       <div className="container-fluid">
         <div className="navbar-header">
           <a className="navbar-brand" href="#">q.</a>
