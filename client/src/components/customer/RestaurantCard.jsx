@@ -20,14 +20,14 @@ class RestaurantCard extends React.Component {
     const closedStatusCircle = {
       background: '#C01717'
     };
-    
+
     this.state.restaurantStatus === 'Closed' ? statusCircle = closedStatusCircle : statusCircle = openStatusCircle;
-    
+
     let image = this.props.restaurant.image;
-    
+
     return (
-      <div className="restaurant-container">
-        <div className="col s12 m7">
+      <div className="restaurant-container col-xs-12">
+        <div className="col-xs-12 col-xs-offset-0 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
           <div className="card small hoverable">
             <div className="card-image">
               <img src={image}/>

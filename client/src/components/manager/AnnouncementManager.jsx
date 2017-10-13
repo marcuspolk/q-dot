@@ -13,7 +13,28 @@ class AnnouncementManager extends React.Component {
     };
   }
 
-  toggleStatus() {
+  deleteAnnouncement(id) {
+    $.ajax({
+      url: `/announcements/${id}`,
+      method: 'DELETE',
+      success: () => {
+        //splice from announcements array.
+        var anns = this.state.announcements;
+        for (var i = 0; i < anns.length; i++) {
+          if (anns[i].id === id) {
+            anns.splice(i, 1);
+            break;
+          }
+        }
+        this.setState({
+          announcements: anns
+        });
+        console.log('it deleted');
+      },
+      error: (err) => {
+        console.log('error deleting announcement. ', err);
+      }
+    })
     // save this for later. for now they'll
     // have to edit manually through modal.
   }
@@ -63,12 +84,31 @@ class AnnouncementManager extends React.Component {
       });
       // client side change. this seems ugly. please let me know if there's a better way. -marcus
     } else {
-      // post.
+      // post new announcement. callback should add to state.
+      $.ajax({
+        url: `/restaurant/${this.props.restaurantId}/announcements`,
+        method: 'POST',
+        data: {
+          message: this.state.modalMessage,
+          status: this.state.modalStatus
+        },
+        success: (data) => {
+          //want to change state here.
+          var ann = data[0];
+          var announcements = this.state.announcements;
+          announcements.push({
+            message: ann.message,
+            status: ann.status,
+            id: ann.id,
+            updatedAt: ann.updatedAt
+          });
+          this.setState({announcements: announcements})
+        },
+        error: (err) => {
+          console.log('error creating new announcement:', err);
+        }
+      });
     }
-  }
-
-  delete() {
-    // woo.
   }
 
   componentDidMount() {
@@ -128,7 +168,6 @@ class AnnouncementManager extends React.Component {
                     </div>
                   </form>
                 </div>
-
               </div>
               <div className="modal-footer">
                 <button className="btn btn-success" data-dismiss="modal" onClick={() => this.submitAnnouncement()}>Submit</button>
@@ -142,22 +181,21 @@ class AnnouncementManager extends React.Component {
             <table className="table table-striped">
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th>announcement</th>
-                  <th>status</th>
-                  <th>time</th>
+                  <th>Announcement</th>
+                  <th>Status</th>
+                  <th>Time</th>
+                  <th><button data-toggle="modal" data-target="#announcement-editor" onClick={() => this.populateModal()}>Add New</button></th>
                 </tr>
               </thead>
               <tbody>
                 {this.state.announcements.map(announcement => {
                   return (
                     <tr key={announcement.id}>
-                      <td>{announcement.id}</td>
                       <td>{announcement.message}</td>
                       <td>{announcement.status}</td>
                       <td>{announcement.updatedAt}</td>
                       <td><button data-toggle="modal" data-target="#announcement-editor" onClick={()=> this.populateModal(announcement)}>edit</button></td>
-                      <td onClick={this.toggleStatus.bind(this)}>toggle</td>
+                      <td onClick={() => this.deleteAnnouncement(announcement.id)}><button>Delete</button></td>
                     </tr>
                   );
                 })}
