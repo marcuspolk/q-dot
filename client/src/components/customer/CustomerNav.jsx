@@ -14,10 +14,6 @@ class CustomerNav extends React.Component {
     // this.getUserRewards();
   }
 
-  handleClick() {
-    console.log('clicks');
-  }
-
   getUserRewards() {
     $.ajax({
       method: 'GET',
@@ -27,6 +23,16 @@ class CustomerNav extends React.Component {
       },
       failure: (error) => {
         console.log('failed to grab restaurant data', error);
+      }
+    });
+  }
+
+  handleClick(path) {
+    $.ajax({
+      method: 'GET',
+      url: path,
+      success: (data) => {
+        window.location.href = '/customer';
       }
     });
   }
@@ -57,7 +63,7 @@ class CustomerNav extends React.Component {
                 <li onClick={() => $('#user-rewards').modal('toggle')}>
                   <span className="glyphicon glyphicon-star"></span> Rewards
                 </li>
-                <li>
+                <li onClick={e => location.href = '/logout'}>
                   <span className="glyphicon glyphicon-log-out"></span> Logout
                 </li>
               </ul>

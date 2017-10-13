@@ -400,7 +400,7 @@ app.get('/logout', (req, res) => {
     dbManagerQuery.addAuditHistory('LOGOUT', req.user.id)
       .then(results => {
         req.logout();
-        res.redirect('/managerlogin');
+        res.redirect('/customer');
       });
   }
 });
