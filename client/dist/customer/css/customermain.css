@@ -9487,7 +9487,16 @@ nav li a {
 
 .customer-nav-login li {
   font-size: 20px;
-  margin: 20px;
+  padding-right: 50px;
+  padding-left: 50px;
+  color: #414141;
+}
+
+.customer-nav-login li:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  color: #23527c;
+  text-decoration: underline;
 }
 
 @media only screen and (min-width: 501px) {
