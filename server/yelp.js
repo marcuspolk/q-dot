@@ -27,6 +27,7 @@ const yelp = {
 						phone: body.display_phone, 
 						image: body.image_url, 
 						rating: body.rating, 
+						rating: body.review_count,
 						address: body.location.address1 + ' ' + body.location.city + ' ' + body.location.state + ' ' + body.location.zip_code, 
 						yelpID: body.id, 
 						latitude: body.coordinates.latitude, 

@@ -114,6 +114,7 @@ const Restaurant = db.define('restaurant', {
   },
   image: Sequelize.STRING,
   rating: Sequelize.INTEGER,
+  reviewCount: Sequelize.INTEGER,
   address: Sequelize.STRING,
   latitude: Sequelize.DOUBLE,
   longitude: Sequelize.DOUBLE,
