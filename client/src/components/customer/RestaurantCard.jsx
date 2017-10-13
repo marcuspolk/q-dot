@@ -7,7 +7,8 @@ class RestaurantCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      restaurantStatus: this.props.restaurant.status
+      restaurantStatus: this.props.restaurant.status,
+      announcements: this.props.restaurant.announcements
     };
   }
 
