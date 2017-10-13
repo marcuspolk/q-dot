@@ -9,26 +9,83 @@ class ManagerSignup extends React.Component {
       password: '',
       restaurant: '',
       city: '',
-      unauthorised: false
+      unauthorised: true,
+      restaurantList: []
     };
+  }
+
+  componentDidMount() {
+    $.ajax({
+      url: '/restaurants',
+      method: 'GET',
+      success: results => {
+        var restaurantList = [];
+        results.forEach(restaurant => {
+          restaurantList.push(restaurant.name);
+        });
+        this.setState({
+          restaurantList: restaurantList
+        });
+      },
+      error: err => {
+        console.error(err);
+      }
+    });
   }
 
   updateInputFields(event, field) {
     this.setState({
       [field]: event.target.value
     });
+    if (field === 'restaurant') {
+
+    }
   }
+
+  // isRestaurantOnYelp() {
+  //   $.ajax({
+  //     url: '/yelp',
+  //     method: 'GET',
+  //     data: {
+  //       term: this.state.restaurant,
+  //       location: this.state.city
+  //     },
+  //     success: result => {
+  //       var restaurants = [];
+  //       result.businesses.forEach(function(business) {
+  //         restaurants.push(business.name);
+  //       });
+  //       return restaurants.indexOf(this.state.restaurant !== -1);
+  //     },
+  //     error: err => {
+  //       console.error(err);
+  //     }
+  //   });
+  // }
+
+  // addRestaurantInfoToDb() {
+  //   $.ajax({
+  //     url: '/yelp',
+  //     method: 'GET',
+  //     data: {
+  //       term: this.state.restaurant,
+  //       location: this.state.city
+  //     },
+  //     success: 
+  //   })
+  // }
 
   submitHandler(event) {
     event.preventDefault();
     $.ajax({
-      url: `/manager?username=${this.state.username}&password=${this.state.password}&restaurant=${this.state.restaurant}`,
+      url: `/manager?username=${this.state.username}&password=${this.state.password}&restaurant=${this.state.restaurant}&location=${this.state.city}`,
       method: 'POST',
       success: (data) => {
-        this.setState({
-          unauthorised: false
-        });
-        window.location.href = data;
+        console.log('result from submitHandler request: ', data);
+        // this.setState({
+        //   unauthorised: false
+        // });
+        // window.location.href = data;
       },
       failure: (err) => {
         console.log('failed to sign up', err);
@@ -83,11 +140,17 @@ class ManagerSignup extends React.Component {
           <input
             value={this.state.restaurant}
             type='text'
+            list = 'restaurants'
             className='form-control'
             placeholder='Restaurant'
             required
             onChange={(e) => this.updateInputFields(e, 'restaurant')}
           />
+          <datalist id='restaurants'>
+            {this.state.restaurantList.map(restaurant => {
+              return (<option value={restaurant}/>);
+            })}
+          </datalist>
           <button className='btn btn-lg btn-primary btn-block' type='submit'>Sign Up</button>
           <br />
           {
