@@ -41,7 +41,7 @@ const Manager = db.define('manager', {
   },
   username: Sequelize.STRING,
   passwordHash: Sequelize.STRING,
-  passwordSalt: Sequelize.STRING
+  passwordSalt: Sequelize.STRING,
 });
 
 //Customer Schema
@@ -58,17 +58,6 @@ const Customer = db.define('customer', {
     allowNull: false
   },
   email: Sequelize.STRING,
-  passwordHash: {
-    type: Sequelize.STRING,
-    defaultValue: null
-  },
-  passwordSalt: {
-    type: Sequelize.STRING,
-    defaultValue: null
-  },
-  username: {
-    type: Sequelize.STRING
-  }
 });
 
 //Queue Schema
@@ -169,9 +158,13 @@ Announcement.belongsTo(Restaurant);
 Restaurant.hasMany(Menu);
 Menu.belongsTo(Restaurant);
 
-Customer.sync()
-  .then(() => Restaurant.sync())
+// Relationship between Cutomer and login credentials
+Manager.hasOne(Customer);
+Customer.belongsTo(Manager);
+
+Restaurant.sync()
   .then(() => Manager.sync())
+  .then(() => Customer.sync())
   .then(() => ManagerAudit.sync())
   .then(() => Queue.sync())
   .then(() => Announcement.sync())
@@ -187,5 +180,5 @@ module.exports = {
   Manager,
   ManagerAudit,
   Announcement,
-  Menu
+  Menu,
 };

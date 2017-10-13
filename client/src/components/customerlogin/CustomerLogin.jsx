@@ -57,7 +57,7 @@ class CustomerLogin extends React.Component {
         <div className='container'>
           <form className='form-signin' onSubmit={this.submitHandler.bind(this)}>
             <h2 className='form-signin-heading'>Log in</h2>
-            <label className='sr-only'>Email address</label>
+            <label className='sr-only'>Username</label>
             <input
               value={this.state.username}
               type='username'

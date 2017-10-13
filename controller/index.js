@@ -40,21 +40,32 @@ const updateRestaurantStatus = (info) => {
 
 // find/add customer to database
 const findOrAddCustomer = (params) => {
-  mobile = helpers.phoneNumberFormatter(params.mobile);
-  name = helpers.nameFormatter(params.name);
+  const mobile = helpers.phoneNumberFormatter(params.mobile);
+  const name = helpers.nameFormatter(params.name);
   return db.Customer.findOne({where: {mobile: mobile}})
     .then(customer => {
       if (customer === null) {
         const customer = {
-          name: helpers.nameFormatter(name),
-          mobile: helpers.phoneNumberFormatter(mobile)
+          name: name,
+          mobile: mobile
         };
 
         if (params.email) {
           customer.email = params.email;
         }
+        if (params.managerId) {
+          customer.managerId = params.managerId;
+        }
 
         return db.Customer.create(customer);
+      } else if (params.managerId && !customer.managerId) {
+        db.Customer.update({
+          name: name,
+          email: params.email,
+          username: params.username
+        }, {
+          where: { id: customer.id }
+        });
       } else {
         return customer;
       }

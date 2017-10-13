@@ -3,9 +3,9 @@ const dbQuery = require('../controller/index.js');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const dbManagerQuery = require('../controller/manager.js');
+
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    console.log('gets her');
     dbQuery.getManagerInfo(username)
       .then(user => {
         if (!user) {

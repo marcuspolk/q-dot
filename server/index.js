@@ -7,7 +7,6 @@ const port = process.env.PORT || 1337;
 const db = require('../database/index.js');
 const dbQuery = require('../controller/index.js');
 const dbManagerQuery = require('../controller/manager.js');
-const dbCustomerQuery = require('../controller/customer.js');
 const dbMenuQuery = require('../controller/menu.js');
 const dummyData = require('../database/dummydata.js');
 const helpers = require('../helpers/helpers.js');
@@ -15,7 +14,6 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const passport = require('./passport.js');
-const passportCustomer = require('./passportCustomer.js');
 const dummyQueues = require('../database/dummyQueues.js');
 const yelp = require('./yelp.js');
 const sendSMS = require('../helpers/sms.js');
@@ -368,9 +366,22 @@ app.patch('/queues', (req, res) => {
 
 //login a manager for a restaurant
 app.post('/managerlogin', passport.authenticate('local'), (req, res) => {
-  console.log('gets here');
-  dbManagerQuery.addAuditHistory('LOGIN', req.user.id)
-    .then(results => res.send(`/manager?restaurantId=${req.user.restaurantId}`));
+  if (req.user.restaurantId) {
+    dbManagerQuery.addAuditHistory('LOGIN', req.user.id)
+      .then(results => {
+        res.send(`/manager?restaurantId=${req.user.restaurantId}`);
+      });
+  } else {
+    res.sendStatus(401);
+  }
+});
+
+app.post('/customerlogin', passport.authenticate('local'), (req, res) => {
+  if (!req.user.restaurantId) {
+    res.send('/customer');
+  } else {
+    res.sendStatus(401);
+  }
 });
 
 //request for logout of manager page of a restaurant
@@ -398,18 +409,21 @@ app.post('/manager', (req, res) => {
   // }
 });
 
-app.post('/customerlogin', (req, res) => {
-  passportCustomer(req, res);
-  res.send('/customer');
-});
-
 app.post('/customer', (req, res) => {
-  if (!req.query.password || !req.query.mobile) {
+  if (!req.query.password || !req.query.mobile || !req.query.username) {
     res.sendStatus(400);
   } else {
-    var passwordInfo = dbCustomerQuery.genPassword(req.query.password, dbCustomerQuery.genSalt());
-    dbCustomerQuery.addCustomer(req.query.name, passwordInfo.passwordHash, passwordInfo.salt, req.query.mobile, req.query.email, req.query.username, (results) => {
-      res.redirect('/');
+    var passwordInfo = dbManagerQuery.genPassword(req.query.password, dbManagerQuery.genSalt());
+    dbManagerQuery.addCustomer(req.query.username, passwordInfo.passwordHash, passwordInfo.salt, (results) => {
+      dbQuery.findOrAddCustomer({
+        managerId: results[0].id,
+        name: req.query.name,
+        mobile: req.query.mobile,
+        email: req.query.email
+      })
+        .then((result) => {
+          res.send(result);
+        });
     });
   }
 });
@@ -450,6 +464,7 @@ app.delete('/manager/history', (req, res) => {
 app.get('*', (req, res) => {
   console.log('doing stuff');
   if (req.session.queueInfo) {
+    console.log('gets here');
     res.redirect(`/customer/queueinfo?queueId=${req.session.queueInfo.queueId}`);
   } else {
     res.redirect('/customer');
