@@ -10073,3 +10073,24 @@ body, .date-info {
 h1, h2, h3, h4, h5, .banner-title {
   font-family: 'Playfair Display', serif !important;
 }
+
+/* REWARDS MODAL STYLES */
+#reward-table th {
+  font-size: 20px;
+}
+
+#reward-table td {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  font-size: 20px;
+}
+
+#reward-table td.reward-description {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  font-size: 15px;
+}
+
+#reward-table .material-icons {
+  font-size: 60px;
+}

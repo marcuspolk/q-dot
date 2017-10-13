@@ -497,6 +497,16 @@ app.get('/userdata', (req, res) => {
   }
 });
 
+app.get('/rewards', (req, res) => {
+  if (!req.user) {
+    res.redirect('/customer');
+  } else if (req.user.restaurantId) {
+    res.redirect('/manager');
+  } else {
+
+  }
+});
+
 app.get('*', (req, res) => {
   if (req.session.queueInfo) {
     res.redirect(`/customer/queueinfo?queueId=${req.session.queueInfo.queueId}`);
