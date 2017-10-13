@@ -152,3 +152,7 @@ h3 {
   margin-top: 50px;
   font-family: 'Playfair Display', serif;
 }
+
+.modal-backdrop {
+  z-index: 0;
+}
