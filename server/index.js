@@ -42,7 +42,9 @@ app.use(passport.session());
 //this is to check if manager is logged in, before using static middleware. MUST always be above express.static!
 app.get('/manager', (req, res, next) => {
   if (req.user) {
-    if (!req.query.restaurantId) {
+    if (!req.user.restaurantId) {
+      res.redirect('/customer');
+    } else if (!req.query.restaurantId) {
       res.redirect(`/manager?restaurantId=${req.user.restaurantId}`);
     } else {
       next();
@@ -478,9 +480,7 @@ app.delete('/manager/history', (req, res) => {
 });
 
 app.get('*', (req, res) => {
-  console.log('doing stuff');
   if (req.session.queueInfo) {
-    console.log('gets here');
     res.redirect(`/customer/queueinfo?queueId=${req.session.queueInfo.queueId}`);
   } else {
     res.redirect('/customer');
