@@ -33,7 +33,6 @@ class QueueInfo extends React.Component {
 
   getCurrentCustomerId() {
     let windowUrl = window.location.href;
-    console.log()
     let id = Number(new URLSearchParams(window.location.search).get('queueId'));
     if (!id) {
       $.ajax({

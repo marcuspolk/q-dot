@@ -18,12 +18,16 @@ class CustomerHome extends React.Component {
       restaurantList: [],
       modalRestaurant: undefined,
       location: undefined,
-      modalMap: undefined
+      modalMap: undefined,
+      zoom: 10
     };
   }
 
   componentDidMount() {
     this.getRestaurantList();
+    $('#rest-map').on('bs.show.modal', () => {
+      google.maps.event.trigger(map, 'resize');
+    });
   }
 
   getRestaurantList() {
