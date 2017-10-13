@@ -103,7 +103,7 @@ class CustomerSignup extends React.Component {
           {
             this.state.unauthorised ?
               <div className="alert alert-danger">
-              invalid credentials - please try again!
+              user already exist - please try again!
               </div>
               : null
           }

@@ -48,7 +48,7 @@ const addManager = function(username, passwordHash, passwordSalt, restaurant, lo
       //console.log('result of addManager controller fn: ', result);
       if(result !== null) {
       cb(result);
-        
+
       }
     })
     .catch(err => {
@@ -67,7 +67,10 @@ const addCustomer = (username, passwordHash, passwordSalt, cb) => {
     .then(result => {
       cb(result);
     })
-    .catch(err => console.error(err));
+    .catch(err => {
+      console.error(err);
+      cb(401);
+    });
 };
 
 const addAuditHistory = function(type, managerId) {
