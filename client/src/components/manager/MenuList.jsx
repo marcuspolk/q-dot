@@ -2,7 +2,6 @@ import React from 'react';
 import MenuListItem from './MenuListItem.jsx';
 import _ from 'lodash';
 import $ from 'jquery';
-// require('webpack-jquery-ui/sortable');
 
 class MenuList extends React.Component {
   constructor(props) {
@@ -14,7 +13,8 @@ class MenuList extends React.Component {
         dish: '',
         description: '',
         price: ''
-      }
+      },
+      newMenu: null
     };
   }
 
@@ -23,9 +23,43 @@ class MenuList extends React.Component {
     newModal.type = type;
     newModal.action = action;
     this.setState({ modalMenu: newModal });
-    // everytime the state changed, modal needs to initialize.
-    // so put the modal toggle in the next runloop of modal initialize
     setTimeout(() => $('#menu-form').modal('toggle'), 0);
+  }
+
+  componentDidMount() {
+    $('#sortable-menu').sortable({
+      axis: 'y',
+      revert: true,
+      stop: () => {
+        let children = $('#sortable-menu')[0].children;
+        let newMenu = $.map(children, (child, index) => {
+          return `${child.id}?field=order&order=${(index)}`;
+        });
+        this.setState({
+          newMenu: newMenu
+        });
+      }
+    });
+    $('#sortable-menu, #sortable-menu .ui-state-default').disableSelection();
+  }
+
+  componentDidUpdate() {
+    if (this.state.newMenu) {
+      this.state.newMenu.forEach((query, index) => {
+        // dbMenuQuery.updateMenu(req.params.menuId, req.query.field, req.query[req.query.field])
+        $.ajax({
+          url: `./menu/${query}`,
+          type: 'PUT',
+          success: (data) => {
+            console.log(data);
+          },
+          error: (err) => {
+            console.log('Something went wrong when trying to update the order of the menu', err);
+          }
+        });
+      })
+
+    }
   }
 
   updateModalVals(e, field) {
@@ -64,9 +98,11 @@ class MenuList extends React.Component {
             <h3 className="col-xs-8">Menu</h3>
             <button className="col-xs-4" onClick={this.showModal.bind(this, 'POST', 'Add')}>Add Dish</button>
           </div>
-          <ul className="menu col-xs-12">
+          <ul id="sortable-menu" className="menu col-xs-12">
             {this.props.menu.map((menuItem, index) => {
-              return (<MenuListItem showModal={this.showModal.bind(this)} key={index} menuItem={menuItem}/>);
+              return (<div id={menuItem.id} className=".ui-state-default" key={index}>
+                <MenuListItem showModal={this.showModal.bind(this)} menuItem={menuItem}/>
+              </div>);
             })}
           </ul>
         </div>

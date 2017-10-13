@@ -130,9 +130,9 @@ class ManagerApp extends React.Component {
         this.getMenu();
       },
       error: (err) => {
-        console.log('Something went wrong when trying to update ' + (menuItem.dish || ' the menu'), err);
+        console.log('Something went wrong when trying to update ' + (menuItem.dish || 'the menu'), err);
       }
-    })
+    });
   }
 
   updateQueue(queryArray) {
@@ -164,7 +164,7 @@ class ManagerApp extends React.Component {
               <div id="number-in-queue">{this.state.restaurantInfo.queues ? this.state.restaurantInfo.queues.length : '0'}</div>
               <h2>Approximate Wait Time</h2>
               <div id="number-in-queue">{this.state.restaurantInfo.total_wait}</div>
-              <MenuList updateMenu={this.updateMenu.bind(this)} menu={this.state.menu}/>
+              <MenuList getMenu={this.getMenu.bind(this)} updateMenu={this.updateMenu.bind(this)} menu={this.state.menu}/>
               <ManagerAudit/>
             </div>
             <div className="col-md-6">
