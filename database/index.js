@@ -105,8 +105,16 @@ const Restaurant = db.define('restaurant', {
     type: Sequelize.INTEGER,
     defaultValue: 0
   },
-  status: Sequelize.STRING,
-  image: Sequelize.STRING
+  status: {
+    type: Sequelize.STRING,
+    defaultValue: 'Closed'
+  },
+  image: Sequelize.STRING,
+  rating: Sequelize.INTEGER,
+  address: Sequelize.STRING,
+  latitude: Sequelize.DOUBLE,
+  longitude: Sequelize.DOUBLE,
+  yelpID: Sequelize.STRING
 });
 
 const Announcement = db.define('announcement', {
