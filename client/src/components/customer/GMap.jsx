@@ -4,7 +4,7 @@ import GoogleMapReact from "google-map-react";
 
 const Marker = (props) => (
   <div >
-    <div style={{width: '30px', height: '30px', fontSize: '10px', paddingTop:'10px', background: 'skyblue', 'border-radius': '50%', textTransform: 'uppercase', color: 'white', textAlign: 'center'}}>You</div>
+    <div style={{width: '30px', height: '30px', fontSize: '10px', paddingTop:'10px', background: 'skyblue', borderRadius: '50%', textTransform: 'uppercase', color: 'white', textAlign: 'center'}}>You</div>
   </div>
 );
 
