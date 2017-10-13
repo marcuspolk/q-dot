@@ -9,7 +9,7 @@ class ManagerSignup extends React.Component {
       password: '',
       restaurant: '',
       city: '',
-      unauthorised: false,
+      unauthorised: true,
       restaurantList: []
     };
   }
@@ -82,10 +82,10 @@ class ManagerSignup extends React.Component {
       method: 'POST',
       success: (data) => {
         console.log('result from submitHandler request: ', data);
-        this.setState({
-          unauthorised: false
-        });
-        window.location.href = data;
+        // this.setState({
+        //   unauthorised: false
+        // });
+        // window.location.href = data;
       },
       failure: (err) => {
         console.log('failed to sign up', err);
