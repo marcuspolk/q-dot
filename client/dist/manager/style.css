@@ -97,6 +97,8 @@ h2 {
   margin-bottom: 5px;
   border: 1px solid gray;
   border-radius: 10px;
+  background: white;
+  overflow-x: hidden;
 }
 
 .menu li .price {

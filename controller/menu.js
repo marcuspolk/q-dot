@@ -1,13 +1,18 @@
 const db = require('../database/index.js');
 const Sequelize = require('sequelize');
 
+let menuSize = 0;
+
 const getMenuForRestaurant = (restaurantId) => {
   return db.Menu.findAll({
-    where: { restaurantId: restaurantId }
+    where: { restaurantId: restaurantId },
+    order: Sequelize.col('order')
   });
 };
 
 const addMenuItem = (menuObj) => {
+  menuObj.order = menuSize;
+  menuSize++;
   return db.Menu.findOrCreate({
     where: menuObj // menu obj should look like: {dish: '', description: '', price: 0}
   });
