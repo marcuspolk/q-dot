@@ -17,7 +17,8 @@ class CustomerHome extends React.Component {
       currentRestaurant: {},
       restaurantList: [],
       modalRestaurant: undefined,
-      location: undefined
+      location: undefined,
+      modalMap: undefined
     };
   }
 
@@ -44,6 +45,13 @@ class CustomerHome extends React.Component {
       modalRestaurant: menu
     });
     setTimeout(() => $('#customer-menu').modal('toggle'), 0);
+  }
+
+  showMap(restaurant) {
+    this.setState({
+      modalMap: restaurant
+    });
+    setTimeout(() => $('#rest-map').modal('toggle'), 0);
   }
 
   getMenu(restaurantId) {
@@ -85,7 +93,7 @@ class CustomerHome extends React.Component {
             {this.state.location ?
               <div style={{width: '250px', height: '250px', margin: '100px auto 0'}}>
                 <GMap
-                  isMarkerShown
+                  you={!!this.state.location}
                   location={this.state.location}
                   apiKey={api_key}
                 />
@@ -93,16 +101,19 @@ class CustomerHome extends React.Component {
 
               : ''}
             <h4 style={{marginTop: '50px'}} className="col-xs-12 text-center">Help me queue up at...</h4>
+
             {this.state.restaurantList.map(restaurant => (
               <div className="col-xs-12" key={restaurant.id}>
                 <div className="col-xs-12">
                   <div className="col-xs-12 col-xs-offset-0 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-                    <button onClick={this.getMenu.bind(this, restaurant.id)} className="col-xs-5 col-xs-offset-7 col-sm-4 col-sm-offset-8 col-md-3 col-md-offset-9">Menu</button>
+                    <button onClick={this.showMap.bind(this, restaurant)} className="col-xs-5 col-xs-offset-2 col-sm-4 col-sm-offset-4 col-md-3 col-md-offset-6">Map</button>
+                    <button onClick={this.getMenu.bind(this, restaurant.id)} className="col-xs-5 col-xs-offset-0 col-sm-4 col-md-3">Menu</button>
                   </div>
                 </div>
                 <Link to={`/restaurant/${restaurant.name}/${restaurant.id}`}><RestaurantCard restaurant={restaurant}/></Link>
               </div>
             ))}
+
           </div>
         </div>
 
@@ -130,6 +141,34 @@ class CustomerHome extends React.Component {
             </div>
             : []
           }
+
+          { this.state.modalMap ?
+            <div style={{background: 'none', boxShadow: 'none'}} id="rest-map" className="modal fade" role="dialog">
+              <div className="modal-dialog">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <button type="button" className="close" data-dismiss="modal">&times;</button>
+                    <h2 className="modal-title">Menu</h2>
+                  </div>
+                  <div className="modal-body">
+                    <div style={{width: '250px', height: '250px', margin: '15px auto'}}>
+                      <GMap
+                        you={!!this.state.location}
+                        isMarkerShown
+                        location={this.state.location}
+                        restaurant={{latitude: this.state.modalMap.latitude, longitude: this.state.modalMap.longitude}}
+                        apiKey={api_key}
+                      />
+                    </div>
+                  </div>
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            : '' }
       </div>
     );
 
