@@ -39,7 +39,10 @@ const Manager = db.define('manager', {
     primaryKey: true,
     autoIncrement: true
   },
-  username: Sequelize.STRING,
+  username: {
+    type: Sequelize.STRING,
+    unique: true
+  },
   passwordHash: Sequelize.STRING,
   passwordSalt: Sequelize.STRING,
 });
