@@ -433,6 +433,9 @@ app.post('/customer', (req, res) => {
   } else {
     var passwordInfo = dbManagerQuery.genPassword(req.query.password, dbManagerQuery.genSalt());
     dbManagerQuery.addCustomer(req.query.username, passwordInfo.passwordHash, passwordInfo.salt, (results) => {
+      if (results === 401) {
+        res.sendStatus(results);
+      }
       dbQuery.findOrAddCustomer({
         managerId: results[0].id,
         name: req.query.name,
