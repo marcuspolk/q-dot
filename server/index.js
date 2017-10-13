@@ -489,6 +489,15 @@ app.delete('/manager/history', (req, res) => {
   }
 });
 
+app.get('/userdata', (req, res) => {
+  console.log('gets here');
+  if (!req.user.restaurantId) {
+    res.send(req.user.username);
+  } else {
+    res.send('');
+  }
+});
+
 app.get('*', (req, res) => {
   if (req.session.queueInfo) {
     res.redirect(`/customer/queueinfo?queueId=${req.session.queueInfo.queueId}`);
