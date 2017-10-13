@@ -386,11 +386,15 @@ app.post('/customerlogin', passport.authenticate('local'), (req, res) => {
 
 //request for logout of manager page of a restaurant
 app.get('/logout', (req, res) => {
-  dbManagerQuery.addAuditHistory('LOGOUT', req.user.id)
-    .then(results => {
-      req.logout();
-      res.redirect('/managerlogin');
-    });
+  if (!req.user) {
+    res.redirect('/customer');
+  } else {
+    dbManagerQuery.addAuditHistory('LOGOUT', req.user.id)
+      .then(results => {
+        req.logout();
+        res.redirect('/managerlogin');
+      });
+  }
 });
 
 app.post('/manager', (req, res) => {
