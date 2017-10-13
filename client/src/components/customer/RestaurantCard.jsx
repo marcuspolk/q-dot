@@ -10,7 +10,6 @@ class RestaurantCard extends React.Component {
       restaurantStatus: this.props.restaurant.status,
       announcements: this.props.restaurant.announcements
     };
-    console.log('restaurant announcements: ', this.state.announcements);
   }
 
   render() {

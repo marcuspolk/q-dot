@@ -5,6 +5,7 @@ import SelectedRestaurant from './SelectedRestaurant.jsx';
 import RestaurantCard from './RestaurantCard.jsx';
 import MenuListItem from './MenuListItem.jsx'
 import GMap from './GMap.jsx';
+import AnnouncementModal from './AnnouncementModal.jsx';
 import $ from 'jquery';
 const { api_key } = require('../../../../server/credentials/googleAPI.js');
 import { Link } from 'react-router-dom';
@@ -86,6 +87,12 @@ class CustomerHome extends React.Component {
     }
   }
 
+  showAnnModal(restaurant) {
+    this.setState({
+      currentRestaurant: restaurant
+    }, () => $('#announcements').modal('toggle'));
+  }
+
   render() {
     return (
       <div>
@@ -111,6 +118,7 @@ class CustomerHome extends React.Component {
                   <div className="col-xs-12 col-xs-offset-0 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
                     <button onClick={this.showMap.bind(this, restaurant)} className="col-xs-5 col-xs-offset-2 col-sm-4 col-sm-offset-4 col-md-3 col-md-offset-6">Map</button>
                     <button onClick={this.getMenu.bind(this, restaurant.id)} className="col-xs-5 col-xs-offset-0 col-sm-4 col-md-3">Menu</button>
+                    <button onClick={() => this.showAnnModal(restaurant)} className="col-xs-5 col-xs-offset-7 col-sm-4 col-sm-offset-8 col-md-3 col-md-offset-9">Announcements ({restaurant.announcements.length})</button>
                   </div>
                 </div>
                 <Link to={`/restaurant/${restaurant.name}/${restaurant.id}`}><RestaurantCard restaurant={restaurant}/></Link>
@@ -120,6 +128,7 @@ class CustomerHome extends React.Component {
           </div>
         </div>
 
+        {this.state.currentRestaurant.announcements && <AnnouncementModal announcements={this.state.currentRestaurant.announcements}/>}
 
           { this.state.modalRestaurant
             ? <div style={{background: 'none', boxShadow: 'none'}} id="customer-menu" className="modal fade" role="dialog">
@@ -174,9 +183,7 @@ class CustomerHome extends React.Component {
             : '' }
       </div>
     );
-
   }
-
 }
 
 export default CustomerHome;
