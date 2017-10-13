@@ -127,7 +127,11 @@ const Menu = db.define('menu', {
   },
   dish: Sequelize.STRING,
   description: Sequelize.STRING,
-  price: Sequelize.INTEGER
+  price: Sequelize.INTEGER,
+  order: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
+  }
 });
 
 // Relationship between Restaurant & Queue
