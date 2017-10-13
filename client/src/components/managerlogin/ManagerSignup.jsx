@@ -9,7 +9,7 @@ class ManagerSignup extends React.Component {
       password: '',
       restaurant: '',
       city: '',
-      unauthorised: true,
+      unauthorised: false,
       restaurantList: []
     };
   }
@@ -42,39 +42,6 @@ class ManagerSignup extends React.Component {
     }
   }
 
-  // isRestaurantOnYelp() {
-  //   $.ajax({
-  //     url: '/yelp',
-  //     method: 'GET',
-  //     data: {
-  //       term: this.state.restaurant,
-  //       location: this.state.city
-  //     },
-  //     success: result => {
-  //       var restaurants = [];
-  //       result.businesses.forEach(function(business) {
-  //         restaurants.push(business.name);
-  //       });
-  //       return restaurants.indexOf(this.state.restaurant !== -1);
-  //     },
-  //     error: err => {
-  //       console.error(err);
-  //     }
-  //   });
-  // }
-
-  // addRestaurantInfoToDb() {
-  //   $.ajax({
-  //     url: '/yelp',
-  //     method: 'GET',
-  //     data: {
-  //       term: this.state.restaurant,
-  //       location: this.state.city
-  //     },
-  //     success: 
-  //   })
-  // }
-
   submitHandler(event) {
     event.preventDefault();
     $.ajax({
@@ -82,10 +49,6 @@ class ManagerSignup extends React.Component {
       method: 'POST',
       success: (data) => {
         console.log('result from submitHandler request: ', data);
-        // this.setState({
-        //   unauthorised: false
-        // });
-        // window.location.href = data;
       },
       failure: (err) => {
         console.log('failed to sign up', err);
