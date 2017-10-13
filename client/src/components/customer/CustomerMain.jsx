@@ -7,7 +7,7 @@ import SelectedRestaurant from './SelectedRestaurant.jsx';
 const CustomerMain = (props) => (
   <main>
     <Switch>
-      <Route exact path={'/customer'} component={CustomerHome}/>
+      <Route exact path={'/customer'} component={CustomerHome} user={props.user}/>
       <Route path={'/restaurant'} component={SelectedRestaurant}/>
     </Switch>
   </main>
