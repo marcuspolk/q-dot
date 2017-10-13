@@ -14,7 +14,8 @@ class CustomerHome extends React.Component {
       selectRestaurant: false,
       currentRestaurant: {},
       restaurantList: [],
-      modalRestaurant: undefined
+      modalRestaurant: undefined,
+      location: undefined
     };
   }
 
@@ -55,13 +56,32 @@ class CustomerHome extends React.Component {
     });
   }
 
+  getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        let location = {
+          latitude: position.latitude,
+          longitude: position.longitude
+        };
+        this.setState({
+          location: location
+        });
+        //call google maps api call
+      });
+    } else {
+      console.log('Geolocation not supported by your browser');
+    }
+  }
+
   render() {
     return (
       <div>
         <div className="customer-home">
           <CustomerBanner />
           <div className="select-restaurant-container col-xs-12">
-            <h4>Help me queue up at...</h4>
+            <button className="col-xs-10 col-xs-offset-1 col-sm-4 col-sm-offset-4" onClick={this.getLocation.bind(this)}>Find Restaurants Near Me</button>
+            {/*show user location*/}
+            <h4 style={{marginTop: '50px'}} className="col-xs-12 text-center">Help me queue up at...</h4>
             {this.state.restaurantList.map(restaurant => (
               <div className="col-xs-12" key={restaurant.id}>
                 <div className="col-xs-12">

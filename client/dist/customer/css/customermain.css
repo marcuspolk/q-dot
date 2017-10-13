@@ -4741,6 +4741,7 @@ small {
   transition: box-shadow .25s;
   transition: box-shadow .25s, -webkit-box-shadow .25s;
   border-radius: 2px;
+  padding-bottom: 20px;
 }
 
 .card .card-title {
@@ -9737,7 +9738,6 @@ nav li a {
 }
 
 .restaurant-info {
-
   border-bottom: 1px solid #dbdbdb;
   color: #414141;
   word-wrap: break-word;
