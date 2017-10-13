@@ -10027,6 +10027,30 @@ nav li a {
   border-bottom: 1px solid gray;
 }
 
+.transportation .fa {
+  color: white;
+  margin: 10px;
+  width: 40px;
+  height: 40px;
+  padding: auto;
+  padding-top: 5px;
+  background: skyblue;
+  border-radius: 5px;
+}
+
+.transportation .fa:hover {
+  background: lightgray;
+  cursor: pointer;
+}
+
+.travelInfo {
+  width: 60%;
+  color: white;
+  padding: 5px;
+  background: skyblue;
+  margin: 10px auto;
+  border-radius: 10px;
+}
 
 body, .date-info {
   font-family: 'Raleway', sans-serif !important;

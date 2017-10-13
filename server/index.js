@@ -17,6 +17,7 @@ const passport = require('./passport.js');
 const dummyQueues = require('../database/dummyQueues.js');
 const yelp = require('./yelp.js');
 const sendSMS = require('../helpers/sms.js');
+const requestDistance = require('./googleMaps.js');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -87,7 +88,7 @@ app.get('/restaurants', (req, res) => {
         res.send('failed for one restaurant');
       });
   } else {
-    dbQuery.findInfoForAllRestaurants()
+    dbQuery.findInfoForAllRestaurants(req.query.city)
       .then(restaurants => res.send(restaurants))
       .catch(error => {
         console.log('error getting info for all restaurants', error);
@@ -156,6 +157,11 @@ app.post('*/menu/:restaurantId', (req, res) => {
   }
 });
 
+app.get('*/travel', (req, res) => {
+  requestDistance(req.query, (results) => {
+    res.send(results);
+  });
+});
 
 // handle announcements for restaurants.
 /*
