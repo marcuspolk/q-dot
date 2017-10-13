@@ -18,8 +18,7 @@ class CustomerHome extends React.Component {
       restaurantList: [],
       modalRestaurant: undefined,
       location: undefined,
-      modalMap: undefined,
-      zoom: 10
+      modalMap: undefined
     };
   }
 
