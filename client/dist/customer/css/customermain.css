@@ -9484,6 +9484,10 @@ nav li a {
   width: 100%;
 }
 
+.customer-nav-login li {
+  margin: 20px;
+}
+
 @media only screen and (min-width: 501px) {
   .customer-group-selector-container, .select-restaurant-container {
     position: relative;
@@ -9544,7 +9548,7 @@ nav li a {
   }
 
   .select-restaurant-container h4 {
-
+    font-family: Roboto, Helvetica Neue, sans-serif !important;
     color: #202020;
     font-size: 30px !important;
     line-height: 32px !important;
