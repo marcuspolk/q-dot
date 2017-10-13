@@ -25,6 +25,7 @@ coverage
 # Credentials
 database/credentials/credentials.js
 server/credentials/credentials.js
+server/credentials/googleAPI.js
 
 # Dependency directorys
 # Deployed apps should consider commenting these lines out:
@@ -36,4 +37,3 @@ client/dist/js/
 customerApp-bundle.js
 managerApp-bundle.js
 queueinfo-bundle.js
-

@@ -529,3 +529,5 @@ const socketUpdateManager = (restaurantId) => {
     io.to(managerMap[restaurantId]).emit('update', 'queue changed');
   }
 };
+
+module.exports = app;
