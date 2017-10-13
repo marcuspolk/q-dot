@@ -4,7 +4,9 @@ import CustomerBanner from './CustomerBanner.jsx';
 import SelectedRestaurant from './SelectedRestaurant.jsx';
 import RestaurantCard from './RestaurantCard.jsx';
 import MenuListItem from './MenuListItem.jsx'
+import GMap from './GMap.jsx';
 import $ from 'jquery';
+const { api_key } = require('../../../../server/credentials/googleAPI.js');
 import { Link } from 'react-router-dom';
 
 class CustomerHome extends React.Component {
@@ -60,8 +62,8 @@ class CustomerHome extends React.Component {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         let location = {
-          latitude: position.latitude,
-          longitude: position.longitude
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
         };
         this.setState({
           location: location
@@ -69,7 +71,7 @@ class CustomerHome extends React.Component {
         //call google maps api call
       });
     } else {
-      console.log('Geolocation not supported by your browser');
+      alert('Geolocation not supported by your browser');
     }
   }
 
@@ -80,7 +82,16 @@ class CustomerHome extends React.Component {
           <CustomerBanner />
           <div className="select-restaurant-container col-xs-12">
             <button className="col-xs-10 col-xs-offset-1 col-sm-4 col-sm-offset-4" onClick={this.getLocation.bind(this)}>Find Restaurants Near Me</button>
-            {/*show user location*/}
+            {this.state.location ?
+              <div style={{width: '250px', height: '250px', margin: '100px auto 0'}}>
+                <GMap
+                  isMarkerShown
+                  location={this.state.location}
+                  apiKey={api_key}
+                />
+              </div>
+
+              : ''}
             <h4 style={{marginTop: '50px'}} className="col-xs-12 text-center">Help me queue up at...</h4>
             {this.state.restaurantList.map(restaurant => (
               <div className="col-xs-12" key={restaurant.id}>
