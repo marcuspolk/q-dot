@@ -156,7 +156,7 @@ app.post('*/menu/:restaurantId', (req, res) => {
 
 
 // handle announcements for restaurants.
-  /*
+/*
     check auth for post requests. should be a manager of the restaurant.
     only send inactive messages if manager auth present.
     for now put code in here. after finishing, move it to controller/index.js
@@ -167,10 +167,10 @@ app.get('/restaurant/:id/announcements', (req, res) => {
   db.Announcement.findAll({where: {restaurantId: id}}).then(announcements => {
     res.json(announcements);
   })
-  .catch(err => {
-    console.log('error getting announcements');
-    res.send(`error getting announcements ${err}`)
-  });
+    .catch(err => {
+      console.log('error getting announcements');
+      res.send(`error getting announcements ${err}`);
+    });
 });
 
 app.post('/restaurant/:id/announcements', (req, res) => {
@@ -329,7 +329,7 @@ app.put('/queues', (req, res) => {
           return sendSMS(row.customer.mobile, row.restaurant.name, row.customer.name);
         })
         .then(() => {
-          return dbQuery.removeFromQueue(req.query.queueId, req.body.status)
+          return dbQuery.removeFromQueue(req.query.queueId, req.body.status);
         })
         .then(result => {
           res.send(result);
@@ -362,12 +362,26 @@ app.patch('/queues', (req, res) => {
       console.log('Error updating queue', err);
       res.status(418).send('Request Failed');
     });
-})
+});
 
 //login a manager for a restaurant
 app.post('/managerlogin', passport.authenticate('local'), (req, res) => {
-  dbManagerQuery.addAuditHistory('LOGIN', req.user.id)
-    .then(results => res.send(`/manager?restaurantId=${req.user.restaurantId}`));
+  if (req.user.restaurantId) {
+    dbManagerQuery.addAuditHistory('LOGIN', req.user.id)
+      .then(results => {
+        res.send(`/manager?restaurantId=${req.user.restaurantId}`);
+      });
+  } else {
+    res.sendStatus(401);
+  }
+});
+
+app.post('/customerlogin', passport.authenticate('local'), (req, res) => {
+  if (!req.user.restaurantId) {
+    res.send('/customer');
+  } else {
+    res.sendStatus(401);
+  }
 });
 
 //request for logout of manager page of a restaurant
@@ -407,8 +421,27 @@ app.post('/manager', (req, res) => {
   // }
 });
 
+app.post('/customer', (req, res) => {
+  if (!req.query.password || !req.query.mobile || !req.query.username) {
+    res.sendStatus(400);
+  } else {
+    var passwordInfo = dbManagerQuery.genPassword(req.query.password, dbManagerQuery.genSalt());
+    dbManagerQuery.addCustomer(req.query.username, passwordInfo.passwordHash, passwordInfo.salt, (results) => {
+      dbQuery.findOrAddCustomer({
+        managerId: results[0].id,
+        name: req.query.name,
+        mobile: req.query.mobile,
+        email: req.query.email
+      })
+        .then((result) => {
+          res.send(result);
+        });
+    });
+  }
+});
+
 //add route to manager/:restaurant
-  // on successful login/signup, redirect to manager/:restaurant
+// on successful login/signup, redirect to manager/:restaurant
 
 //returns up to 10 suggested restaurant objects based on term and location
 app.get('/yelp', (req, res) => {
@@ -424,7 +457,7 @@ app.get('/yelp', (req, res) => {
 app.get('/manager/history', (req, res) => {
   if (req.user) {
     dbManagerQuery.getAuditHistory(req.user.restaurantId, (results) => {
-      res.send(results)
+      res.send(results);
     });
   } else {
     res.sendStatus(401);
@@ -443,6 +476,7 @@ app.delete('/manager/history', (req, res) => {
 app.get('*', (req, res) => {
   console.log('doing stuff');
   if (req.session.queueInfo) {
+    console.log('gets here');
     res.redirect(`/customer/queueinfo?queueId=${req.session.queueInfo.queueId}`);
   } else {
     res.redirect('/customer');

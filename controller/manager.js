@@ -56,6 +56,20 @@ const addManager = function(username, passwordHash, passwordSalt, restaurant, lo
     });
 };
 
+const addCustomer = (username, passwordHash, passwordSalt, cb) => {
+  db.Manager.findOrCreate({
+    where: {
+      username: username,
+      passwordHash: passwordHash,
+      passwordSalt: passwordSalt
+    }
+  })
+    .then(result => {
+      cb(result);
+    })
+    .catch(err => console.error(err));
+};
+
 const addAuditHistory = function(type, managerId) {
   return db.ManagerAudit.create({
     type: type,
@@ -103,5 +117,6 @@ module.exports = {
   addManager,
   addAuditHistory,
   getAuditHistory,
-  deleteAuditHistory
+  deleteAuditHistory,
+  addCustomer
 };

@@ -4,6 +4,8 @@
  * MIT License (https://raw.githubusercontent.com/Dogfalo/materialize/master/LICENSE)
  */
 
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display|Raleway');
+
 body {
   background: #f4f7f9 !important;
 }
@@ -2150,14 +2152,14 @@ body {
  * 2. Prevent iOS and IE text size adjust after device orientation change,
  *    without disabling user zoom.
  */
-html {
+/*html {
   font-family: sans-serif;
   /* 1 */
-  -ms-text-size-adjust: 100%;
+  /*-ms-text-size-adjust: 100%;*/
   /* 2 */
-  -webkit-text-size-adjust: 100%;
+  /*-webkit-text-size-adjust: 100%;*/
   /* 2 */
-}
+/*}*/
 
 /**
  * Remove default margin.
@@ -9482,6 +9484,10 @@ nav li a {
   width: 100%;
 }
 
+.customer-nav-login li {
+  margin: 20px;
+}
+
 @media only screen and (min-width: 501px) {
   .customer-group-selector-container, .select-restaurant-container {
     position: relative;
@@ -9530,7 +9536,7 @@ nav li a {
   }
 
   h4 {
-    font-family: Roboto, Helvetica Neue, sans-serif !important;
+
     color: #202020;
     font-size: 26px !important;
     line-height: 32px !important;
@@ -9574,7 +9580,7 @@ nav li a {
 
 @media only screen and (max-width: 500px) {
   h4 {
-    font-family: Roboto, Helvetica Neue, sans-serif;
+
     color: #202020;
     font-size: 26px;
     line-height: 32px;
@@ -9614,7 +9620,6 @@ nav li a {
 
 
 .card .card-title, .card .card-title p, .card .card-title .card-title-text {
-  font-family: Roboto, Helvetica Neue, sans-serif !important;
   color: #414141;
   font-size: 24px;
   line-height: 28px;
@@ -9647,7 +9652,6 @@ nav li a {
 }
 
 .card-title p.status {
-  font-family: Roboto, Helvetica Neue, sans-serif !important;
   font-size: 11px !important;
   text-transform: uppercase !important;
   line-height: 16px !important;
@@ -9662,7 +9666,6 @@ nav li a {
 }
 
 .card-content {
-  font-family: Roboto, Helvetica Neue, sans-serif !important;
   color: #6d6d6d;
   font-size: 14px !important;
   line-height: 24px !important;
@@ -9734,7 +9737,7 @@ nav li a {
 }
 
 .restaurant-info {
-  font-family: Roboto, Helvetica Neue, sans-serif !important;
+
   border-bottom: 1px solid #dbdbdb;
   color: #414141;
   word-wrap: break-word;
@@ -9857,7 +9860,7 @@ nav li a {
 }
 
 .position-number {
-  font-family: Roboto, Helvetica Neue, sans-serif !important;
+
   color: #053C5E;
   font-size: 140px;
   font-weight: 900;
@@ -9910,7 +9913,7 @@ nav li a {
   }
 
   .banner-title {
-    font-family: Roboto,Helvetica Neue,sans-serif !important;
+    font-family: Roboto,Helvetica Neue,sans-serif;
     font-size: 36px !important;
     color: #fff !important;
     font-weight: 700 !important;
@@ -9932,7 +9935,7 @@ nav li a {
   }
 
   .date-info {
-    font-family: Roboto, Helvetica Neue, sans-serif !important;
+
     font-size: 18px !important;
     color: #fff !important;
     font-weight: 200 !important;
@@ -9973,7 +9976,7 @@ nav li a {
 }
 
 .date-info {
-  font-family: Roboto, Helvetica Neue, sans-serif !important;
+
   font-size: 18px !important;
   color: #fff !important;
   font-weight: 200 !important;
@@ -9993,6 +9996,7 @@ nav li a {
   z-index: 5;
   margin-bottom: 0 !important;
   margin-top: 30px;
+  font-family: 'Raleway', sans-serif !important;
 }
 
 .menu {
@@ -10004,6 +10008,7 @@ nav li a {
 }
 
 .menu li {
+  font-family: 'Raleway', sans-serif !important;
   width: 100%;
   display: inline-block !important;
   padding: 10px 15px;
@@ -10019,4 +10024,17 @@ nav li a {
 .menu li h4 {
   padding-bottom: 10px;
   border-bottom: 1px solid gray;
+}
+
+
+body, .date-info {
+  font-family: 'Raleway', sans-serif !important;
+}
+
+.card-title-text {
+  font-family: 'Playfair Display', serif !important;
+}
+
+h1, h2, h3, h4, h5, .banner-title {
+  font-family: 'Playfair Display', serif !important;
 }

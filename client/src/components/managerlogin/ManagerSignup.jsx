@@ -156,7 +156,7 @@ class ManagerSignup extends React.Component {
           {
             this.state.unauthorised ?
               <div className="alert alert-danger">
-              invalid credentials - please try again!
+              username already exists - please try again!
               </div>
               : null
           }
