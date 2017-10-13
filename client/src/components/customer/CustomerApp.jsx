@@ -16,7 +16,6 @@ class CustomerApp extends React.Component {
       url: '/userdata',
       type: 'GET',
       success: (res) => {
-        console.log(res);
         this.setState({
           user: res
         });

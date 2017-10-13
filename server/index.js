@@ -490,8 +490,7 @@ app.delete('/manager/history', (req, res) => {
 });
 
 app.get('/userdata', (req, res) => {
-  console.log('gets here');
-  if (!req.user.restaurantId) {
+  if (req.user && !req.user.restaurantId) {
     res.send(req.user.username);
   } else {
     res.send('');
