@@ -52,10 +52,10 @@ class CustomerNav extends React.Component {
             </ul>
             { !this.props.user
               ? <ul className="nav-mobile hide-on-med-and-down inline right customer-nav-login">
-                <li>
+                <li onClick={e => location.href = '/customersignup'}>
                   <span className="glyphicon glyphicon-user"></span> Sign Up
                 </li>
-                <li>
+                <li onClick={e => location.href = '/customerlogin'}>
                   <span className="glyphicon glyphicon-log-in"></span> Login
                 </li>
               </ul>

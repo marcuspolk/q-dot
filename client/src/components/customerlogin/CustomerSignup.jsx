@@ -44,10 +44,6 @@ class CustomerSignup extends React.Component {
     });
   }
 
-  togglePath(event) {
-    this.props.togglePath(event, 'login');
-  }
-
   render() {
     return (
       <div className='container'>
@@ -109,7 +105,7 @@ class CustomerSignup extends React.Component {
           }
         </form>
         <div className="redir">Already have an account?</div>
-        <button onClick={this.togglePath.bind(this)} className='btn btn-lg btn-primary btn-block'>Login</button>
+        <button onClick={e => location.href = '/customerlogin'} className='btn btn-lg btn-primary btn-block'>Login</button>
       </div>
     );
   }
