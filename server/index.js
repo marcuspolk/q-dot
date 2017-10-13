@@ -394,14 +394,16 @@ app.get('/logout', (req, res) => {
 });
 
 app.post('/manager', (req, res) => {
-  console.log('request', req.query);
-  // if (req.user) {
   if (!req.query.password || !req.query.username || !req.query.restaurant) {
     res.sendStatus(400);
   } else {
     var passwordInfo = dbManagerQuery.genPassword(req.query.password, dbManagerQuery.genSalt());
     dbManagerQuery.addManager(req.query.username, passwordInfo.passwordHash, passwordInfo.salt, req.query.restaurant, (results) => {
-      res.send(results);
+      if (!results) {
+        res.sendStatus(401);
+      } else {
+        res.send(results);
+      }
     });
   }
   // } else {
