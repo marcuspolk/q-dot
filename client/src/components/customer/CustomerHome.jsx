@@ -24,6 +24,9 @@ class CustomerHome extends React.Component {
 
   componentDidMount() {
     this.getRestaurantList();
+    $('#rest-map').on('bs.show.modal', () => {
+      google.maps.event.trigger(map, 'resize');
+    });
   }
 
   getRestaurantList() {
