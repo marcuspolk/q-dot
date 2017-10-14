@@ -92,7 +92,7 @@ class CustomerHome extends React.Component {
         origin: `${this.state.location.latitude},${this.state.location.longitude}`,
         destination: `${this.state.modalMap.latitude},${this.state.modalMap.longitude}`,
         mode: mode
-      }
+      };
       $.ajax({
         url: `./travel?${$.param(params)}`,
         success: (data) => {
@@ -106,6 +106,7 @@ class CustomerHome extends React.Component {
         }
       });
     }
+  }
 
   showAnnModal(restaurant) {
     this.setState({
