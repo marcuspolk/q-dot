@@ -149,7 +149,8 @@ class CustomerHome extends React.Component {
           </div>
         </div>
 
-        {this.state.currentRestaurant.announcements && <AnnouncementModal announcements={this.state.currentRestaurant.announcements}/>}
+        {this.state.currentRestaurant.announcements &&
+        <AnnouncementModal announcements={this.state.currentRestaurant.announcements}/>}
 
           { this.state.modalRestaurant
             ? <div style={{background: 'none', boxShadow: 'none'}} id="customer-menu" className="modal fade" role="dialog">
