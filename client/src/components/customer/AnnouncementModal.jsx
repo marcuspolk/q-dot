@@ -11,15 +11,9 @@ const AnnouncementModal = (props) => (
           <h2 className="modal-title">Announcements</h2>
         </div>
         <div className="modal-body">
-          <table className="striped">
-            <tbody>
-              {props.announcements.length === 0 && (<tr><td>No Announcements</td></tr>)}
-              {props.announcements.map((announcement) => (<tr key={announcement.id}><td>{announcement.message}</td></tr>))}
-            </tbody>
-          </table>
           <ul className="menu">
-            {props.announcements.map((announcement) => {
-            })}
+            {props.announcements.length === 0 && (<li>No Announcements</li>)}
+            {props.announcements.map((announcement) => (<li key={announcement.id}>{announcement.message}</li>))}
           </ul>
         </div>
         <div className="modal-footer">
