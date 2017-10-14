@@ -96,7 +96,6 @@ class CustomerHome extends React.Component {
       $.ajax({
         url: `./travel?${$.param(params)}`,
         success: (data) => {
-          console.log(data);
           this.setState({
             travelTime: data
           });
