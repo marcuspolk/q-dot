@@ -201,9 +201,31 @@ class CustomerHome extends React.Component {
                       <i onClick={this.travelTime.bind(this, 'bicycling')} className="fa fa-bicycle fa-2x" aria-hidden="true"></i>
                     </div>
                     {!!this.state.travelTime ?
-                      <div style={{width: '100%'}} className="text-center">
+                      <div>
+                        <div style={{width: '100%'}} className="text-center">
                           <div className="travelInfo">Distance: {this.state.travelTime.distance.text}</div>
                           <div className="travelInfo">Duration: {this.state.travelTime.duration.text}</div>
+                        </div>
+                        <ul className="menu">
+                          <li><div className="col-xs-11">
+                            <i className="fa fa-map-marker" aria-hidden="true"></i> {this.state.travelTime.start_address}
+                          </div></li>
+                          {this.state.travelTime.steps.map((step, index) => {
+                            return (
+                              <li key={index}>
+                                <h4 className="col-xs-9">{step.distance.text}</h4>
+                                <div className="col-xs-3 text-right price">
+                                  {step.duration.text}
+                                </div>
+                                <div className="col-xs-11" dangerouslySetInnerHTML={{__html: step.html_instructions}}>
+                                </div>
+                              </li>
+                            );
+                          })}
+                          <li><div className="col-xs-11">
+                            <i className="fa fa-map-marker" aria-hidden="true"></i> {this.state.travelTime.end_address}
+                          </div></li>
+                        </ul>
                       </div>
                       :
                       <div style={{width: '100%'}} className="text-center">
