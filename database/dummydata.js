@@ -101,87 +101,29 @@ const addCustomer = () => {
   });
 };
 
+const rewardQueueOptions = {
+  size: 2,
+  status: 'Seated',
+  customerId: 5
+};
+
 const addRewardQueues = () => {
-  db.Queue.create({
-    size: 2,
-    status: 'Seated',
-    customerId: 5
-  })
-    .then(() => db.Queue.create({
-      size: 2,
-      status: 'Seated',
-      customerId: 5
-    }))
-    .then(() => db.Queue.create({
-      size: 2,
-      status: 'Seated',
-      customerId: 5
-    }))
-    .then(() => db.Queue.create({
-      size: 2,
-      status: 'Seated',
-      customerId: 5
-    }))
-    .then(() => db.Queue.create({
-      size: 2,
-      status: 'Seated',
-      customerId: 5
-    }))
-    .then(() => db.Queue.create({
-      size: 2,
-      status: 'Seated',
-      customerId: 5
-    }))
-    .then(() => db.Queue.create({
-      size: 2,
-      status: 'Seated',
-      customerId: 5
-    }))
-    .then(() => db.Queue.create({
-      size: 2,
-      status: 'Seated',
-      customerId: 5
-    }))
-    .then(() => db.Queue.create({
-      size: 2,
-      status: 'Seated',
-      customerId: 5
-    }))
-    .then(() => db.Queue.create({
-      size: 2,
-      status: 'Seated',
-      customerId: 5
-    }))
-    .then(() => db.Queue.create({
-      size: 2,
-      status: 'Seated',
-      customerId: 5
-    }))
-    .then(() => db.Queue.create({
-      size: 2,
-      status: 'Seated',
-      customerId: 5
-    }))
-    .then(() => db.Queue.create({
-      size: 2,
-      status: 'Seated',
-      customerId: 5
-    }))
-    .then(() => db.Queue.create({
-      size: 2,
-      status: 'Seated',
-      customerId: 5
-    }))
-    .then(() => db.Queue.create({
-      size: 2,
-      status: 'Seated',
-      customerId: 5
-    }))
-    .then(() => db.Queue.create({
-      size: 2,
-      status: 'No show',
-      customerId: 5
-    }));
+  db.Queue.create(rewardQueueOptions)
+    .then(() => db.Queue.create(rewardQueueOptions))
+    .then(() => db.Queue.create(rewardQueueOptions))
+    .then(() => db.Queue.create(rewardQueueOptions))
+    .then(() => db.Queue.create(rewardQueueOptions))
+    .then(() => db.Queue.create(rewardQueueOptions))
+    .then(() => db.Queue.create(rewardQueueOptions))
+    .then(() => db.Queue.create(rewardQueueOptions))
+    .then(() => db.Queue.create(rewardQueueOptions))
+    .then(() => db.Queue.create(rewardQueueOptions))
+    .then(() => db.Queue.create(rewardQueueOptions))
+    .then(() => db.Queue.create(rewardQueueOptions))
+    .then(() => db.Queue.create(rewardQueueOptions))
+    .then(() => db.Queue.create(rewardQueueOptions))
+    .then(() => db.Queue.create(rewardQueueOptions))
+    .then(() => db.Queue.create(rewardQueueOptions));
 };
 
 
