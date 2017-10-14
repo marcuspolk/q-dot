@@ -118,7 +118,7 @@ const Restaurant = db.define('restaurant', {
   },
   'total_wait': {
     type: Sequelize.INTEGER,
-    defaultValue: 10
+    defaultValue: 0
   },
   'average_wait': {
     type: Sequelize.INTEGER,
