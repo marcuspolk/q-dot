@@ -10010,6 +10010,15 @@ nav li a {
   border: 2px solid #f4f7f9;
 }
 
+@media(max-width: 780px) {
+  .customer-home button {
+    margin-top: 0;
+  }
+  .customer-home button:first-child {
+    margin-top: 30px;
+  }
+}
+
 .menu {
   list-style: none;
   margin-bottom: 30px;
