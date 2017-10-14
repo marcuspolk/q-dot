@@ -63,6 +63,22 @@ const Customer = db.define('customer', {
   email: Sequelize.STRING,
 });
 
+const Reward = db.define('reward', {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  reservationClaim: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
+  },
+  queueClaim: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
+  }
+});
+
 //Queue Schema
 const Queue = db.define('queue', {
   id: {
@@ -174,6 +190,10 @@ Menu.belongsTo(Restaurant);
 Manager.hasOne(Customer);
 Customer.belongsTo(Manager);
 
+// Relationship between Cutomer and login credentials
+Manager.hasOne(Reward);
+Reward.belongsTo(Manager);
+
 Restaurant.sync()
   .then(() => Manager.sync())
   .then(() => Customer.sync())
@@ -181,6 +201,7 @@ Restaurant.sync()
   .then(() => Queue.sync())
   .then(() => Announcement.sync())
   .then(() => Menu.sync())
+  .then(() => Reward.sync())
   .catch(error => console.log('error syncing data', error));
 
 module.exports = {
@@ -193,4 +214,5 @@ module.exports = {
   ManagerAudit,
   Announcement,
   Menu,
+  Reward
 };

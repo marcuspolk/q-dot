@@ -4,13 +4,13 @@ import CustomerHome from './CustomerHome.jsx';
 import SelectedRestaurant from './SelectedRestaurant.jsx';
 
 // main component that will switch components on render via routes
-const CustomerMain = () => (
+const CustomerMain = (props) => (
   <main>
     <Switch>
-      <Route exact path={'/customer'} component={CustomerHome}/>
+      <Route exact path={'/customer'} component={CustomerHome} user={props.user}/>
       <Route path={'/restaurant'} component={SelectedRestaurant}/>
     </Switch>
-  </main> 
+  </main>
 )
 
 export default CustomerMain;

@@ -79,6 +79,9 @@ const findOrAddCustomer = (params) => {
     });
 };
 
+const findLoggedCustomer = loggedId => {
+  return db.Customer.findOne({where: {managerId: loggedId}});
+};
 
 // get current queue info for one restaurant
 const getQueueInfo = (restaurantId, customerId, customerPosition) => {
@@ -159,12 +162,27 @@ const getCustomerInfo = (queueId) => {
   });
 };
 
+const getCustomerQueueHistory = customerId => {
+  return db.Queue.findAll({
+    where: {
+      customerId: customerId,
+      status: 'Seated'
+    }
+  });
+};
+
 // get info for one manager
 const getCustomerLoginInfo = (username) => {
   return db.Customer.findOne({
     where: {
       username: username
     }
+  });
+};
+
+const getCustomerRewardInfo = userId => {
+  return db.Reward.findOne({
+    where: { managerId: userId }
   });
 };
 
@@ -206,5 +224,8 @@ module.exports = {
   getCustomerLoginInfo,
   getManagerInfo,
   removeFromQueue,
-  updateQueue
+  updateQueue,
+  findLoggedCustomer,
+  getCustomerQueueHistory,
+  getCustomerRewardInfo
 };

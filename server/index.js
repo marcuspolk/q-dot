@@ -400,7 +400,7 @@ app.get('/logout', (req, res) => {
     dbManagerQuery.addAuditHistory('LOGOUT', req.user.id)
       .then(results => {
         req.logout();
-        res.redirect('/managerlogin');
+        res.redirect('/customer');
       });
   }
 });
@@ -486,6 +486,33 @@ app.delete('/manager/history', (req, res) => {
     dbManagerQuery.deleteAuditHistory().then(results => res.send(results));
   } else {
     res.sendStatus(401);
+  }
+});
+
+app.get('/userdata', (req, res) => {
+  if (req.user && !req.user.restaurantId) {
+    res.send(req.user.username);
+  } else {
+    res.send('');
+  }
+});
+
+app.get('/rewards', (req, res) => {
+  if (!req.user) {
+    res.redirect('/customer');
+  } else if (req.user.restaurantId) {
+    res.redirect('/manager');
+  } else {
+    let rewardInfo;
+    dbQuery.getCustomerRewardInfo(req.user.id)
+      .then(rewards => {
+        rewardInfo = rewards;
+        return dbQuery.findLoggedCustomer(req.user.id);
+      })
+      .then(customer => dbQuery.getCustomerQueueHistory(customer.id))
+      .then(queues => {
+        console.log(queues.length);
+      });
   }
 });
 

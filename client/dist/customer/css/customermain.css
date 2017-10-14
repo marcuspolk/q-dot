@@ -9486,7 +9486,17 @@ nav li a {
 }
 
 .customer-nav-login li {
-  margin: 20px;
+  font-size: 20px;
+  padding-right: 50px;
+  padding-left: 50px;
+  color: #414141;
+}
+
+.customer-nav-login li:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  color: #23527c;
+  text-decoration: underline;
 }
 
 @media only screen and (min-width: 501px) {
@@ -10062,4 +10072,25 @@ body, .date-info {
 
 h1, h2, h3, h4, h5, .banner-title {
   font-family: 'Playfair Display', serif !important;
+}
+
+/* REWARDS MODAL STYLES */
+#reward-table th {
+  font-size: 20px;
+}
+
+#reward-table td {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  font-size: 20px;
+}
+
+#reward-table td.reward-description {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  font-size: 15px;
+}
+
+#reward-table .material-icons {
+  font-size: 60px;
 }

@@ -7,6 +7,7 @@ const config = {
     //if you have a new entry point for a new page, add it here
     customerApp: path.resolve(__dirname, 'client/src/customerIndex.jsx'),
     customerLogin: path.resolve(__dirname, 'client/src/customerLoginIndex.jsx'),
+    customerSignup: path.resolve(__dirname, 'client/src/customerSignupIndex.jsx'),
     queueinfo: path.resolve(__dirname, 'client/src/queueinfoIndex.jsx'),
     managerApp: path.resolve(__dirname, 'client/src/managerIndex.jsx'),
     managerLogin: path.resolve(__dirname, 'client/src/managerLoginIndex.jsx')
