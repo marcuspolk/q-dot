@@ -123,7 +123,11 @@ const addRewardQueues = () => {
     .then(() => db.Queue.create(rewardQueueOptions))
     .then(() => db.Queue.create(rewardQueueOptions))
     .then(() => db.Queue.create(rewardQueueOptions))
-    .then(() => db.Queue.create(rewardQueueOptions));
+    .then(() => db.Queue.create({
+      size: 2,
+      status: 'No Show',
+      customerId: 5
+    }));
 };
 
 
