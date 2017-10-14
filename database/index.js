@@ -77,7 +77,7 @@ const Reward = db.define('reward', {
     type: Sequelize.INTEGER,
     defaultValue: 0
   }
-})
+});
 
 //Queue Schema
 const Queue = db.define('queue', {

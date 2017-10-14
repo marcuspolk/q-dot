@@ -64,14 +64,24 @@ const addMenus = () => {
 };
 
 const addManager = () => {
-  return db.Manager.findOrCreate({
+  db.Manager.findOrCreate({
     where: {
       username: 'johnny',
       passwordHash: 'a48af21cebc18c880a2b9c53dd8b3fab483e26ff2b7b77dd9def2afe8305ff44b17f1b8d58e6106bb49570e602fde2b960e0e420d53874b2d8626016bbd97f83',
       passwordSalt: '8b1269b13d1258b15af6c66f4f4d5cd9',
       restaurantId: 1
     }
-  });
+  })
+    .then(() => {
+      return db.Manager.findOrCreate({
+        where: {
+          username: 'shane',
+          passwordHash: '71876a5030fa96e9b0b1adbcc2579d03c2817dabd835ed6e64caf77b5bb31db63e51f65b368f9ba0d4156674a6217fca6a5a3cda9973fb7e47d0aaf979f6efd1',
+          passwordSalt: 'dccfe760d41b6dcbb70ccd884c8df76b',
+          restaurantId: null
+        }
+      });
+    });
 };
 
 const addAnnouncements = () => {
@@ -80,9 +90,104 @@ const addAnnouncements = () => {
       .catch(err => console.log('error adding dummy announcements', err));
 };
 
+const addCustomer = () => {
+  return db.Customer.findOrCreate({
+    where: {
+      name: 'Shane Laymance',
+      mobile: '(661) 703-2338',
+      email: 'shane@gmail.com',
+      managerId: 2
+    }
+  });
+};
+
+const addRewardQueues = () => {
+  db.Queue.create({
+    size: 2,
+    status: 'Seated',
+    customerId: 5
+  })
+    .then(() => db.Queue.create({
+      size: 2,
+      status: 'Seated',
+      customerId: 5
+    }))
+    .then(() => db.Queue.create({
+      size: 2,
+      status: 'Seated',
+      customerId: 5
+    }))
+    .then(() => db.Queue.create({
+      size: 2,
+      status: 'Seated',
+      customerId: 5
+    }))
+    .then(() => db.Queue.create({
+      size: 2,
+      status: 'Seated',
+      customerId: 5
+    }))
+    .then(() => db.Queue.create({
+      size: 2,
+      status: 'Seated',
+      customerId: 5
+    }))
+    .then(() => db.Queue.create({
+      size: 2,
+      status: 'Seated',
+      customerId: 5
+    }))
+    .then(() => db.Queue.create({
+      size: 2,
+      status: 'Seated',
+      customerId: 5
+    }))
+    .then(() => db.Queue.create({
+      size: 2,
+      status: 'Seated',
+      customerId: 5
+    }))
+    .then(() => db.Queue.create({
+      size: 2,
+      status: 'Seated',
+      customerId: 5
+    }))
+    .then(() => db.Queue.create({
+      size: 2,
+      status: 'Seated',
+      customerId: 5
+    }))
+    .then(() => db.Queue.create({
+      size: 2,
+      status: 'Seated',
+      customerId: 5
+    }))
+    .then(() => db.Queue.create({
+      size: 2,
+      status: 'Seated',
+      customerId: 5
+    }))
+    .then(() => db.Queue.create({
+      size: 2,
+      status: 'Seated',
+      customerId: 5
+    }))
+    .then(() => db.Queue.create({
+      size: 2,
+      status: 'Seated',
+      customerId: 5
+    }))
+    .then(() => db.Queue.create({
+      size: 2,
+      status: 'No show',
+      customerId: 5
+    }));
+};
+
 
 const dropDB = () => {
   return db.Queue.drop()
+    .then(() => db.Reward.drop())
     .then(() => db.Customer.drop())
     .then(() => db.Announcement.drop())
     .then(() => db.Menu.drop())
@@ -101,6 +206,9 @@ const dropDB = () => {
     .then(() => addAnnouncements())
     .then(() => db.Menu.sync({force:true}))
     .then(() => addMenus())
+    .then(() => addCustomer())
+    .then(() => addRewardQueues())
+    .then(() => db.Reward.sync({force: true}))
     .catch(err => {
       console.log('error syncing dummy data', err);
     });

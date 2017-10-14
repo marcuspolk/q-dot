@@ -503,7 +503,16 @@ app.get('/rewards', (req, res) => {
   } else if (req.user.restaurantId) {
     res.redirect('/manager');
   } else {
-
+    let rewardInfo;
+    dbQuery.getCustomerRewardInfo(req.user.id)
+      .then(rewards => {
+        rewardInfo = rewards;
+        return dbQuery.findLoggedCustomer(req.user.id);
+      })
+      .then(customer => dbQuery.getCustomerQueueHistory(customer.id))
+      .then(queues => {
+        console.log(queues.length);
+      });
   }
 });
 
