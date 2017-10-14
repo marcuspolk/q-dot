@@ -23,8 +23,15 @@ const findInfoForOneRestaurant = (restaurantId) => {
 };
 
 //find info for all restaurants with current queue information
-const findInfoForAllRestaurants = () => {
-  return db.Restaurant.findAll({include: [db.Queue, db.Announcement]})
+const findInfoForAllRestaurants = (city) => {
+  return db.Restaurant.findAll(
+    { include: [db.Queue, db.Announcement],
+      where: {
+        address: {
+          $like: `%${city}%`
+        }
+      }
+    })
     .then(restaurants => {
       restaurants.forEach(restaurant => {
         restaurant.dataValues.queues = restaurant.queues.filter(row => row.position !== null);

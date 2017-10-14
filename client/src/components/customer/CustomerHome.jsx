@@ -7,6 +7,7 @@ import MenuListItem from './MenuListItem.jsx'
 import GMap from './GMap.jsx';
 import AnnouncementModal from './AnnouncementModal.jsx';
 import $ from 'jquery';
+import scriptLoader from 'react-async-script-loader';
 const { api_key } = require('../../../../server/credentials/googleAPI.js');
 import { Link } from 'react-router-dom';
 
@@ -19,21 +20,19 @@ class CustomerHome extends React.Component {
       restaurantList: [],
       modalRestaurant: undefined,
       location: undefined,
-      modalMap: undefined
+      modalMap: undefined,
+      travelTime: undefined
     };
   }
 
   componentDidMount() {
-    this.getRestaurantList();
-    $('#rest-map').on('bs.show.modal', () => {
-      google.maps.event.trigger(map, 'resize');
-    });
+    this.getRestaurantList('San Francisco');
   }
 
-  getRestaurantList() {
+  getRestaurantList(city) {
     $.ajax({
       method: 'GET',
-      url: '/restaurants',
+      url: `/restaurants?city=${city}`,
       success: (data) => {
         console.log('successfully grabbed restaurant data', data);
         this.setState({ restaurantList: data });
@@ -80,17 +79,39 @@ class CustomerHome extends React.Component {
         this.setState({
           location: location
         });
-        //call google maps api call
       });
     } else {
       alert('Geolocation not supported by your browser');
     }
   }
 
+  travelTime(mode) {
+    if (!!this.state.location) {
+      console.log('clicked');
+      let params = {
+        origin: `${this.state.location.latitude},${this.state.location.longitude}`,
+        destination: `${this.state.modalMap.latitude},${this.state.modalMap.longitude}`,
+        mode: mode
+      }
+      $.ajax({
+        url: `./travel?${$.param(params)}`,
+        success: (data) => {
+          console.log(data);
+          this.setState({
+            travelTime: data
+          });
+        },
+        error: (err) => {
+          console.log('Error fetching travel time from Google Maps API', err);
+        }
+      });
+    }
+
   showAnnModal(restaurant) {
     this.setState({
       currentRestaurant: restaurant
     }, () => $('#announcements').modal('toggle'));
+
   }
 
   render() {
@@ -116,6 +137,8 @@ class CustomerHome extends React.Component {
               <div className="col-xs-12" key={restaurant.id}>
                 <div className="col-xs-12">
                   <div className="col-xs-12 col-xs-offset-0 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+                    <button id="map" onClick={this.showMap.bind(this, restaurant)} className="col-xs-5 col-xs-offset-2 col-sm-4 col-sm-offset-4 col-md-3 col-md-offset-6">Map</button>
+                    <button onClick={this.getMenu.bind(this, restaurant.id)} className="col-xs-5 col-xs-offset-0 col-sm-4 col-md-3">Menu</button>
                     <button onClick={() => this.showAnnModal(restaurant)} className="col-xs-12 col-sm-4 col-md-3 col-md-offset-2">Announcements ({restaurant.announcements.length})</button>
                     <button onClick={this.showMap.bind(this, restaurant)} className="col-xs-12 col-sm-4 col-md-3">Map</button>
                     <button onClick={this.getMenu.bind(this, restaurant.id)} className="col-xs-12 col-sm-4 col-md-3">Menu</button>
@@ -160,7 +183,7 @@ class CustomerHome extends React.Component {
                 <div className="modal-content">
                   <div className="modal-header">
                     <button type="button" className="close" data-dismiss="modal">&times;</button>
-                    <h2 className="modal-title">Menu</h2>
+                    <h2 className="modal-title">{this.state.modalMap.name}</h2>
                   </div>
                   <div className="modal-body">
                     <div style={{width: '250px', height: '250px', margin: '15px auto'}}>
@@ -172,6 +195,22 @@ class CustomerHome extends React.Component {
                         apiKey={api_key}
                       />
                     </div>
+                    <div style={{width: '100%'}} className="text-center transportation">
+                      <i onClick={this.travelTime.bind(this, 'driving')} className="fa fa-car fa-2x" aria-hidden="true"></i>
+                      <i onClick={this.travelTime.bind(this, 'transit')} className="fa fa-subway fa-2x" aria-hidden="true"></i>
+                      <i onClick={this.travelTime.bind(this, 'walking')} className="fa fa-male fa-2x" aria-hidden="true"></i>
+                      <i onClick={this.travelTime.bind(this, 'bicycling')} className="fa fa-bicycle fa-2x" aria-hidden="true"></i>
+                    </div>
+                    {!!this.state.travelTime ?
+                      <div style={{width: '100%'}} className="text-center">
+                          <div className="travelInfo">Distance: {this.state.travelTime.distance.text}</div>
+                          <div className="travelInfo">Duration: {this.state.travelTime.duration.text}</div>
+                      </div>
+                      :
+                      <div style={{width: '100%'}} className="text-center">
+                        <div className="travelInfo">(Note: You must enable location services to see your travel time)</div>
+                      </div>
+                    }
                   </div>
                   <div className="modal-footer">
                     <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
@@ -186,4 +225,8 @@ class CustomerHome extends React.Component {
   }
 }
 
-export default CustomerHome;
+// export default CustomerHome;
+
+export default scriptLoader(
+  [`https://maps.googleapis.com/maps/api/js?key=${api_key}`]
+)(CustomerHome);
