@@ -511,7 +511,7 @@ app.get('/rewards', (req, res) => {
       })
       .then(customer => dbQuery.getCustomerQueueHistory(customer.id))
       .then(queues => {
-        console.log(queues.length);
+        res.send({ rewardQueues: queues.length} );
       });
   }
 });
