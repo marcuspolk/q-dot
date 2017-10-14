@@ -123,9 +123,9 @@ const addToQueue = (params) => {
     .then(restaurant => {
       if (restaurant.status === 'Open') {
         queueInfo.position = restaurant.nextPosition + 1;
-        queueInfo.wait = restaurant.total_wait;
+        queueInfo.wait = Math.round((restaurant.average_wait * queueInfo.size) / 4);
         queueInfo.restaurantId = restaurant.id;
-        let totalWait = restaurant.total_wait + restaurant.average_wait;
+        let totalWait = restaurant.total_wait + queueInfo.wait;
         return db.Restaurant.upsert({'nextPosition': queueInfo.position, 'total_wait': totalWait, phone: restaurant.phone});
       } else {
         throw new Error('Restaurant has closed the queue');
