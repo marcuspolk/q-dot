@@ -1,5 +1,6 @@
 const db = require('./index.js');
 const dbQuery = require('../controller/index.js');
+const request = require('request');
 
 const addToQueue = () => {
   return dbQuery.addToQueue({name: 'Tiffany', restaurantId: 1, size: 2, mobile: '4158475697'})
@@ -12,19 +13,46 @@ const addToQueue = () => {
 };
 
 const addRestaurants = () => {
-  return db.Restaurant.findOrCreate({where: {name: 'Tempest', phone: '(123) 456-7890', image: '../images/tempestbar.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10, rating: 4, address: '431 Natoma St, San Francisco, CA 94103', yelpID: 'Tempest', latitude: 37.767413217936834, longitude: -122.42820739746094}})
-    .then(() => db.Restaurant.findOrCreate({where: {name: 'House of Prime Rib', phone: '(415) 885-4605', image: '../images/houseofprimerib.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10, rating: 5, address: '123 Prime Rib St. San Francisco, CA 94102', yelpID: 'House of Prime Rib', latitude: 37.767413217936898, longitude: -122.42820739746100}}))
-    .then(() => db.Restaurant.findOrCreate({where: {name: 'Tsunami Panhandle', phone: '(415) 567-7664', image: '../images/tsunamipanhandle.jpg', status: 'Open', 'average_wait': 5, 'total_wait': 5, rating: 4, address: '123 Tsunami St. San Francisco, CA 94102', yelpID: 'Tsunami Panhandle', latitude: 37.767413217936605, longitude: -122.42820739746123}}))
-    .then(() => db.Restaurant.findOrCreate({where: {name: 'Kitchen Story', phone: '(415) 525-4905', image: '../images/kitchenstory.jpg', status: 'Open', 'average_wait': 15, 'total_wait': 15, rating: 3, address: '123 Kitchen St. San Francisco, CA 94102', yelpID: 'Kitchen Story', latitude: 37.767413217936987, longitude: -122.42820739746505}}))
-    .then(() => db.Restaurant.findOrCreate({where: {name: 'Burma Superstar', phone: '(415) 387-2147', image: '../images/burmasuperstar.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10, rating: 4, address: '123 Burma St. San Francisco, CA 94102', yelpID: 'Burma Superstar', latitude: 37.767413217936444, longitude: -122.42820739746222}}))
-    .then(() => db.Restaurant.findOrCreate({where: {name: 'State Bird Provisions', phone: '(415) 795-1272', image: '../images/statebirdprovisions.jpg', status: 'Closed', 'average_wait': 8, 'total_wait': 8, rating: 5, address: '123 Bird St. San Francisco, CA 94102', yelpID: 'Bird State', latitude: 37.767413217936800, longitude: -122.42820739746001}}))
-    .then(() => db.Restaurant.findOrCreate({where: {name: 'Limon Rotisserie', phone: '(415) 821-2134', image: '../images/limonrotisserie.jpg', status: 'Closed', 'average_wait': 12, 'total_wait': 12, rating: 4, address: '123 Limon St. San Francisco, CA 94102', yelpID: 'Limon', latitude: 37.767413217936345, longitude: -122.42820739746543}}))
-    .then(() => db.Restaurant.findOrCreate({where: {name: 'Nopa', phone: '(415) 864-8643', image: '../images/nopa.jpg', status: 'Open', 'average_wait': 20, 'total_wait': 20, rating: 3, address: '123 Nopa St. Some City, CA 94102', yelpID: 'Nopa', latitude: 37.767413217936777, longitude: -122.42820739746777}}))
-    .then(() => db.Restaurant.findOrCreate({where: {name: 'Farmhouse Kitchen', phone: '(415) 814-2920', image: '../images/farmhousekitchen.jpg', status: 'Open', 'average_wait': 15, 'total_wait': 15, rating: 5, address: '123 Farmhouse St. San Francisco, CA 94102', yelpID: 'Farmhouse', latitude: 37.767413217936510, longitude: -122.42820739746490}}))
-    .catch(err => {
-      console.log('error adding restaurant', err);
-    });
+  // return db.Restaurant.findOrCreate({where: {name: 'Tempest', phone: '(123) 456-7890', image: '../images/tempestbar.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10, rating: 4, address: '123 Tempest St. San Francisco, CA 94102', yelpID: 'Tempest', latitude: 37.767413217936834, longitude: -122.42820739746094, reviewCount: 1111}})
+  //   .then(() => db.Restaurant.findOrCreate({where: {name: 'House of Prime Rib', phone: '(415) 885-4605', image: '../images/houseofprimerib.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10, rating: 5, address: '123 Prime Rib St. San Francisco, CA 94102', yelpID: 'House of Prime Rib', latitude: 37.767413217936898, longitude: -122.42820739746100, reviewCount: 2222}}))
+  //   .then(() => db.Restaurant.findOrCreate({where: {name: 'Tsunami Panhandle', phone: '(415) 567-7664', image: '../images/tsunamipanhandle.jpg', status: 'Open', 'average_wait': 5, 'total_wait': 5, rating: 4, address: '123 Tsunami St. San Francisco, CA 94102', yelpID: 'Tsunami Panhandle', latitude: 37.767413217936605, longitude: -122.42820739746123, reviewCount: 3333}}))
+  //   .then(() => db.Restaurant.findOrCreate({where: {name: 'Kitchen Story', phone: '(415) 525-4905', image: '../images/kitchenstory.jpg', status: 'Open', 'average_wait': 15, 'total_wait': 15, rating: 3, address: '123 Kitchen St. San Francisco, CA 94102', yelpID: 'Kitchen Story', latitude: 37.767413217936987, longitude: -122.42820739746505, reviewCount: 4444}}))
+  //   .then(() => db.Restaurant.findOrCreate({where: {name: 'Burma Superstar', phone: '(415) 387-2147', image: '../images/burmasuperstar.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10, rating: 4, address: '123 Burma St. San Francisco, CA 94102', yelpID: 'Burma Superstar', latitude: 37.767413217936444, longitude: -122.42820739746222, reviewCount: 5555}}))
+  //   .then(() => db.Restaurant.findOrCreate({where: {name: 'State Bird Provisions', phone: '(415) 795-1272', image: '../images/statebirdprovisions.jpg', status: 'Closed', 'average_wait': 8, 'total_wait': 8, rating: 5, address: '123 Bird St. San Francisco, CA 94102', yelpID: 'Bird State', latitude: 37.767413217936800, longitude: -122.42820739746001, reviewCount: 6666}}))
+  //   .then(() => db.Restaurant.findOrCreate({where: {name: 'Limon Rotisserie', phone: '(415) 821-2134', image: '../images/limonrotisserie.jpg', status: 'Closed', 'average_wait': 12, 'total_wait': 12, rating: 4, address: '123 Limon St. San Francisco, CA 94102', yelpID: 'Limon', latitude: 37.767413217936345, longitude: -122.42820739746543, reviewCount: 7777}}))
+  //   .then(() => db.Restaurant.findOrCreate({where: {name: 'Nopa', phone: '(415) 864-8643', image: '../images/nopa.jpg', status: 'Open', 'average_wait': 20, 'total_wait': 20, rating: 3, address: '123 Nopa St. San Francisco, CA 94102', yelpID: 'Nopa', latitude: 37.767413217936777, longitude: -122.42820739746777, reviewCount: 8888}}))
+  //   .then(() => db.Restaurant.findOrCreate({where: {name: 'Farmhouse Kitchen', phone: '(415) 814-2920', image: '../images/farmhousekitchen.jpg', status: 'Open', 'average_wait': 15, 'total_wait': 15, rating: 5, address: '123 Farmhouse St. San Francisco, CA 94102', yelpID: 'Farmhouse', latitude: 37.767413217936510, longitude: -122.42820739746490, reviewCount: 9999}}))
+  //   .catch(err => {
+  //     console.log('error adding restaurant', err);
+  //   });
+
+  addRestaurant('San Francisco', 'Tempest');
+  addRestaurant('San Francisco', 'House of Prime Rib');
+  addRestaurant('San Francisco', 'Tsunami Panhandle');
+  addRestaurant('San Francisco', 'Kitchen Story');
+  addRestaurant('San Francisco', 'Burma Superstar');
+  addRestaurant('San Francisco', 'State Bird Provisions');
+  addRestaurant('San Francisco', 'Limon Rotisserie');
+  addRestaurant('San Francisco', 'Nopa');
+  addRestaurant('San Francisco', 'Farmhouse Kitchen');
 };
+
+const addRestaurant = (location, term) => {
+  options = {
+    url: 'http://localhost:1337/yelp',
+    qs: {
+      location: location,
+      term: term
+    }
+  };
+  request.get(options, (error, response, body) => {
+    if (error) {
+      console.error('error adding ' + term + ': ', error);
+    } else {
+      console.log('added ' + term + ' to database');
+    }
+  });
+}
 
 const addMenus = () => {
   return db.Menu.findOrCreate({where: {dish: 'Sandwich', description: 'Two pieces of bread with some stuff in between them.', price: 12, order: -3, restaurantId: 1}})

@@ -460,10 +460,11 @@ app.post('/customer', (req, res) => {
 
 //returns up to 10 suggested restaurant objects based on term and location
 app.get('/yelp', (req, res) => {
+  console.log('inside /yelp');
   var params = {
     term: req.query.term,
     location: req.query.location,
-    limit: 10
+    limit: 1
   };
   yelp.get(req, res, params);
 });
